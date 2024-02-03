@@ -54,7 +54,8 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(
       new DriveTeleop(m_driveSubsystem,
       () -> driverPS4Controller.getLeftY(), 
-      () -> driverPS4Controller.getRightY()));
+      () -> driverPS4Controller.getRightY())
+    );
 
     // Configure autonomous sendable chooser
     m_chooser.addOption("Auto1", new Auto1());
@@ -62,6 +63,7 @@ public class RobotContainer {
     m_chooser.addOption("Auto3", new Auto3());
     m_chooser.addOption("Auto4", new Auto4());
     m_chooser.addOption("Auto5", new Auto5());
+    m_chooser.addOption("AutoCommand", new AutoCommand());
     m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
 
 
