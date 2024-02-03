@@ -7,15 +7,15 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveTeleop extends Command {
 
     private final DriveSubsystem m_driveSubsystem;
-    private final double m_left;
-    private final double m_right;
+    private final DoubleSupplier m_left;
+    private final DoubleSupplier m_right;
 
     public DriveTeleop(DriveSubsystem subsystem, DoubleSupplier left, DoubleSupplier right) {
 
 
         m_driveSubsystem = subsystem;
-        m_left = left.getAsDouble();
-        m_right = right.getAsDouble();
+        m_left = left;
+        m_right = right;
         addRequirements(m_driveSubsystem);
 
     }
@@ -28,7 +28,7 @@ public class DriveTeleop extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_driveSubsystem.drive(m_left, m_right);
+        m_driveSubsystem.drive(m_left.getAsDouble(), m_right.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.

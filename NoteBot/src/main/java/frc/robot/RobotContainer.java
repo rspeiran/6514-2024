@@ -22,12 +22,13 @@ public class RobotContainer {
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   // Joysticks
-  private final PS4Controller operatorPS4Controller = new PS4Controller(1);
+  //private final PS4Controller operatorPS4Controller = new PS4Controller(1);
   private final PS4Controller driverPS4Controller = new PS4Controller(0);
 
   
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
 
   private RobotContainer() {
 
@@ -83,41 +84,41 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    final JoystickButton btnDrive1 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnDrive1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnDrive1 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnDrive1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                         
-    final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnDrive2.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnDrive2.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
-    final JoystickButton btnDrive3 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnDrive3.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnDrive3 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnDrive3.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
-    final JoystickButton btnDrive4 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnDrive4.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnDrive4 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnDrive4.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
-    final JoystickButton btnOperator1 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnOperator1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnOperator1 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnOperator1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
-    final JoystickButton btnOperator2 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnOperator2.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnOperator2 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnOperator2.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
-    final JoystickButton btnOperator3 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnOperator3.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnOperator3 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnOperator3.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
-    final JoystickButton btnOperator4 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnOperator4.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //final JoystickButton btnOperator4 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
+    //btnOperator4.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                         
 
   }
+
 
   public PS4Controller getDrivePS4Controller() {
     return driverPS4Controller;
   }
 
-  public PS4Controller getOperatorPS4Controller() {
-    return operatorPS4Controller;
-  }
-
+  //public PS4Controller getOperatorPS4Controller() {
+  //  return operatorPS4Controller;
+  //}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

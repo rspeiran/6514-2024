@@ -32,12 +32,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DriveSubsystem() {
 
-        driveRightMotorControler = new WPI_TalonSRX(20);
+        driveRightMotorControler = new WPI_TalonSRX(30);
         addChild("DriveRightMotorControler",driveRightMotorControler);
         driveRightMotorControler.setInverted(false);
         driveRightMotorControler.setNeutralMode(NeutralMode.Brake);
 
-        driveLeftMotorController = new WPI_TalonSRX(30);
+        driveLeftMotorController = new WPI_TalonSRX(20);
         addChild("DriveLeftMotorController",driveLeftMotorController);
         driveLeftMotorController.setInverted(false);
         driveLeftMotorController.setNeutralMode(NeutralMode.Brake);
@@ -48,15 +48,15 @@ public class DriveSubsystem extends SubsystemBase {
         differentialDrive.setExpiration(0.1);
         differentialDrive.setMaxOutput(1.0);
 
-        driveRightMotorControllerFollower = new WPI_VictorSPX(21);
+        driveRightMotorControllerFollower = new WPI_VictorSPX(31);
         addChild("DriveRightMotorControllerFollower",driveRightMotorControllerFollower);
         driveRightMotorControllerFollower.follow(driveRightMotorControler);
         driveRightMotorControllerFollower.setInverted(false);
         driveRightMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
 
-        driveLeftMotorControllerFollower = new WPI_VictorSPX(31);
+        driveLeftMotorControllerFollower = new WPI_VictorSPX(21);
         addChild("DriveLeftMotorControllerFollower",driveLeftMotorControllerFollower);
-        driveLeftMotorController.follow(driveLeftMotorControllerFollower);
+        driveLeftMotorControllerFollower.follow(driveLeftMotorController);
         driveLeftMotorControllerFollower.setInverted(false);
         driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
 
@@ -95,6 +95,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(double left, double right) {
         differentialDrive.tankDrive(left, right);
+        //differentialDrive.tankDrive(0.40, 0.40);
+
     }
 }
 
