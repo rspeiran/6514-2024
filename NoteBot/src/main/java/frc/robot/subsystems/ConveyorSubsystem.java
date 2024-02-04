@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ConveyorSubsystem extends SubsystemBase {
     private Compressor compressor;
@@ -23,11 +26,12 @@ public class ConveyorSubsystem extends SubsystemBase {
     private DoubleSolenoid solenoidDouble1;
     private Spark intakeTopMotorController;
     private Spark intakeBottomMotorController;
-    private Spark shooterMotorController1;
-    private Spark shooterMotorController2;
-    private Spark conveyorMotorController1;
-    private Spark conveyorMotorController2;
-    private Spark conveyorMotorController3;
+    private WPI_VictorSPX shooterMotorController1;
+    private WPI_VictorSPX shooterMotorController2;
+    private CANSparkMax conveyorMotorController1;
+    private CANSparkMax conveyorMotorController2;
+    private CANSparkMax conveyorMotorController3;
+    private CANSparkMax conveyorMotorController4;
     private Spark liftLeftMotorController;
     private Spark liftRightMotorController;
     private Ultrasonic ultrasonic1;
@@ -52,33 +56,38 @@ public class ConveyorSubsystem extends SubsystemBase {
         //solenoidDouble1 = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 1, 0);
         //addChild("SolenoidDouble1", solenoidDouble1);
  
-        //intakeTopMotorController = new Spark(4);
+        intakeTopMotorController = new Spark(0);
         //addChild("IntakeTopMotorController",intakeTopMotorController);
-        //intakeTopMotorController.setInverted(false);
+        intakeTopMotorController.setInverted(false);
 
-        //intakeBottomMotorController = new Spark(5);
+        intakeBottomMotorController = new Spark(1);
         //addChild("IntakeBottomMotorController",intakeBottomMotorController);
-        //intakeBottomMotorController.setInverted(false);
+        intakeBottomMotorController.setInverted(false);
 
-        //shooterMotorController1 = new Spark(6);
+        shooterMotorController1 = new WPI_VictorSPX(31);
         //addChild("ShooterMotorController1",shooterMotorController1);
-        //shooterMotorController1.setInverted(false);
+        shooterMotorController1.setInverted(false);
 
-        //shooterMotorController2 = new Spark(7);
+        shooterMotorController2 = new WPI_VictorSPX(32);
         //addChild("ShooterMotorController2",shooterMotorController2);
-        //shooterMotorController2.setInverted(false);
+        shooterMotorController2.setInverted(false);
 
-        //conveyorMotorController1 = new Spark(8);
-        //addChild("ConveyorMotorController1",conveyorMotorController1);
-        //conveyorMotorController1.setInverted(false);
+        conveyorMotorController1 = new CANSparkMax(41, MotorType.kBrushed);
+        //addChild("ConveyorMotorController1",conveyorMotorController1.);
+        conveyorMotorController1.setInverted(false);
 
-        //conveyorMotorController2 = new Spark(9);
+        conveyorMotorController2 = new CANSparkMax(42, MotorType.kBrushed);
         //addChild("ConveyorMotorController2",conveyorMotorController2);
-        //conveyorMotorController2.setInverted(false);
+        conveyorMotorController2.setInverted(false);
 
-        //conveyorMotorController3 = new Spark(10);
+        conveyorMotorController3 = new CANSparkMax(43, MotorType.kBrushed);
         //addChild("ConveyorMotorController3",conveyorMotorController3);
-        //conveyorMotorController3.setInverted(false);
+        conveyorMotorController3.setInverted(false);
+
+        conveyorMotorController4 = new CANSparkMax(44, MotorType.kBrushed);
+        //addChild("ConveyorMotorController3",conveyorMotorController3);
+        conveyorMotorController3.setInverted(false);
+
 
         //liftLeftMotorController = new Spark(11);
         //addChild("LiftLeftMotorController",liftLeftMotorController);
@@ -117,6 +126,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        IntakeOn();
 
     }
 
@@ -126,6 +136,46 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     }
 
+    public void IntakeOn() {
+        intakeTopMotorController.set(0.90);
+        intakeBottomMotorController.set(0.90);
+    }
+
+    public void IntakeOff() {
+        intakeTopMotorController.set(0);
+        intakeBottomMotorController.set(0);
+       
+    }
+
+    public void ShooterOn(double speed) {
+        shooterMotorController1.setVoltage(12.2);
+        shooterMotorController2.setVoltage(12.2);
+    }
+
+    public void ShooterOff() {
+        shooterMotorController1.set(0);
+        shooterMotorController2.set(0);
+    }
+
+    public void ConveryorHighOn(double speed) {
+        conveyorMotorController1.setVoltage(12.2);
+        conveyorMotorController2.setVoltage(12.2);
+    }
+
+    public void ConveryorLowOn(double speed) {
+        conveyorMotorController3.setVoltage(12.2);
+        conveyorMotorController4.setVoltage(12.2);
+    }
+
+    public void ConveryorHighOff(double speed) {
+        conveyorMotorController1.setVoltage(12.2);
+        conveyorMotorController2.setVoltage(12.2);
+    }
+
+    public void ConveryorLowoff(double speed) {
+        conveyorMotorController3.setVoltage(12.2);
+        conveyorMotorController4.setVoltage(12.2);
+    }
+
 
 }
-
