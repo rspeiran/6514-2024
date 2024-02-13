@@ -4,6 +4,8 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -15,6 +17,9 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -121,12 +126,30 @@ public class ConveyorSubsystem extends SubsystemBase {
         //servo2 = new Servo(14);
         //addChild("Servo2", servo2);
 
+
+        Shuffleboard.getTab("NoteBot")
+            .add("ShooterMotor Left", 0)
+            .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
+            .withSize(2, 1) // make the widget 2x1
+            .withPosition(0, 0) // place it in the top-left corner
+            .getEntry();
+
+        Shuffleboard.getTab("NoteBot")
+            .add("ShooterMotor Right", 0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withSize(2, 1)
+            .withPosition(3, 0)
+            .getEntry();
+
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
         IntakeOn();
+
+        SmartDashboard.putNumber("ShooterMotor Left", shooterMotorController1.getMotorOutputVoltage());
+        SmartDashboard.putNumber("ShooterMotor Right", shooterMotorController2.getMotorOutputVoltage());
 
     }
 

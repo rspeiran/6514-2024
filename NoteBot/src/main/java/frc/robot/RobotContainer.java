@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.*;
 
@@ -31,6 +33,10 @@ public class RobotContainer {
 
 
   private RobotContainer() {
+    
+    Shuffleboard.selectTab("NoteBot");
+
+    Shuffleboard.selectTab("NoteBot Commands");
 
     SmartDashboard.putData("AutoCommand", new AutoCommand());
     SmartDashboard.putData("Auto1", new Auto1());
