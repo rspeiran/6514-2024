@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -33,12 +35,25 @@ public class DriveSubsystem extends SubsystemBase {
     public DriveSubsystem() {
 
         driveRightMotorControler = new WPI_TalonSRX(30);
-        addChild("DriveRightMotorControler",driveRightMotorControler);
+        //addChild("DriveRightMotorControler",driveRightMotorControler);
+        
+        Shuffleboard.getTab("NoteBot")
+            .add("DriveRight", 0)
+            .withWidget(BuiltInWidgets.kNumberBar) 
+            .withSize(2, 1)
+            .withPosition(3, 3);
+
         driveRightMotorControler.setInverted(false);
         driveRightMotorControler.setNeutralMode(NeutralMode.Brake);
 
         driveLeftMotorController = new WPI_TalonSRX(20);
-        addChild("DriveLeftMotorController",driveLeftMotorController);
+        //addChild("DriveLeftMotorController",driveLeftMotorController);
+        Shuffleboard.getTab("NoteBot")
+            .add("DriveLeft", 0)
+            .withWidget(BuiltInWidgets.kNumberBar) 
+            .withSize(2, 1)
+            .withPosition(0, 3);
+        
         driveLeftMotorController.setInverted(false);
         driveLeftMotorController.setNeutralMode(NeutralMode.Brake);
 
@@ -49,13 +64,13 @@ public class DriveSubsystem extends SubsystemBase {
         differentialDrive.setMaxOutput(1.0);
 
         driveRightMotorControllerFollower = new WPI_VictorSPX(31);
-        addChild("DriveRightMotorControllerFollower",driveRightMotorControllerFollower);
+        //addChild("DriveRightMotorControllerFollower",driveRightMotorControllerFollower);
         driveRightMotorControllerFollower.follow(driveRightMotorControler);
         driveRightMotorControllerFollower.setInverted(false);
         driveRightMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
 
         driveLeftMotorControllerFollower = new WPI_VictorSPX(21);
-        addChild("DriveLeftMotorControllerFollower",driveLeftMotorControllerFollower);
+        //addChild("DriveLeftMotorControllerFollower",driveLeftMotorControllerFollower);
         driveLeftMotorControllerFollower.follow(driveLeftMotorController);
         driveLeftMotorControllerFollower.setInverted(false);
         driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
@@ -95,7 +110,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(double left, double right) {
         differentialDrive.tankDrive(left, right);
-        //differentialDrive.tankDrive(0.40, 0.40);
+        //Shuffleboard.getTab("NoteBot")
+        //    .add("DriveLeft", left);
+        //Shuffleboard.getTab("NoteBot")
+        //    .add("DriveRight", right);
+
 
     }
 }

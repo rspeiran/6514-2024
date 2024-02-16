@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.AnalogInput;
 
+import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -47,9 +49,10 @@ public class ConveyorSubsystem extends SubsystemBase {
     private PowerDistribution powerDistribution;
     private Servo servo1;
     private Servo servo2;
+    //private AnalogInput UltrasonicConveyor;
 
     public ConveyorSubsystem() {
-        //compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        compressor = new Compressor(2, PneumaticsModuleType.CTREPCM);
         //addChild("Compressor",compressor);
 
         //solenoid1 = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
@@ -69,14 +72,6 @@ public class ConveyorSubsystem extends SubsystemBase {
         //addChild("IntakeBottomMotorController",intakeBottomMotorController);
         intakeBottomMotorController.setInverted(false);
 
-        shooterMotorController1 = new WPI_VictorSPX(31);
-        //addChild("ShooterMotorController1",shooterMotorController1);
-        shooterMotorController1.setInverted(false);
-
-        shooterMotorController2 = new WPI_VictorSPX(32);
-        //addChild("ShooterMotorController2",shooterMotorController2);
-        shooterMotorController2.setInverted(false);
-
         conveyorMotorController1 = new CANSparkMax(41, MotorType.kBrushed);
         //addChild("ConveyorMotorController1",conveyorMotorController1.);
         conveyorMotorController1.setInverted(false);
@@ -87,12 +82,19 @@ public class ConveyorSubsystem extends SubsystemBase {
 
         conveyorMotorController3 = new CANSparkMax(43, MotorType.kBrushed);
         //addChild("ConveyorMotorController3",conveyorMotorController3);
-        conveyorMotorController3.setInverted(false);
+        conveyorMotorController3.setInverted(true);
 
         conveyorMotorController4 = new CANSparkMax(44, MotorType.kBrushed);
         //addChild("ConveyorMotorController3",conveyorMotorController3);
-        conveyorMotorController3.setInverted(false);
+        conveyorMotorController4.setInverted(true);
 
+        shooterMotorController1 = new WPI_VictorSPX(45);
+        //addChild("ShooterMotorController1",shooterMotorController1);
+        shooterMotorController1.setInverted(false);
+
+        shooterMotorController2 = new WPI_VictorSPX(46);
+        //addChild("ShooterMotorController2",shooterMotorController2);
+        shooterMotorController2.setInverted(false);
 
         //liftLeftMotorController = new Spark(11);
         //addChild("LiftLeftMotorController",liftLeftMotorController);
@@ -107,6 +109,9 @@ public class ConveyorSubsystem extends SubsystemBase {
 
         //ultrasonic2 = new Ultrasonic(6, 7);
         //addChild("Ultrasonic2", ultrasonic2);
+
+        //AnalogInput UltrasonicConveyor = new AnalogInput(0);
+        //addChild("UltrasonicConveyor", UltrasonicConveyor);
 
         //limitSwitch1 = new DigitalInput(8);
         //addChild("LimitSwitch1", limitSwitch1);
@@ -146,11 +151,27 @@ public class ConveyorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        IntakeOn();
+        //IntakeOn();
 
-        SmartDashboard.putNumber("ShooterMotor Left", shooterMotorController1.getMotorOutputVoltage());
-        SmartDashboard.putNumber("ShooterMotor Right", shooterMotorController2.getMotorOutputVoltage());
+        //SmartDashboard.putNumber("ShooterMotor Left", shooterMotorController1.getMotorOutputVoltage());
+        //SmartDashboard.putNumber("ShooterMotor Right", shooterMotorController2.getMotorOutputVoltage());
+        //compressor.enableDigital();
+        compressor.disable();
 
+        //shooterMotorController1.set(0.10);
+        //shooterMotorController2.set(0.10);
+        
+        //conveyorMotorController1.set(0.10);  //LEFT LOWER
+        //conveyorMotorController3.set(0.10);   //RIGHT LOWER
+
+        //conveyorMotorController2.set(0.10);  //LEFT UPPER
+        //conveyorMotorController4.set(0.10);      //RIGHT UPPER
+        
+        //intakeTopMotorController.set(0.20);
+        //intakeBottomMotorController.set(0.30);
+        //double noteDistance = UltrasonicConveyor.getAverageVoltage();
+        //System.out.print("Voltage " + noteDistance);
+        ;
     }
 
     @Override
@@ -180,14 +201,15 @@ public class ConveyorSubsystem extends SubsystemBase {
         shooterMotorController2.set(0);
     }
 
-    public void ConveryorHighOn(double speed) {
-        conveyorMotorController1.setVoltage(12.2);
-        conveyorMotorController2.setVoltage(12.2);
+    public void ConveryorHighOn(double volts) {
+        conveyorMotorController2.setVoltage(volts);  //LEFT UPPER
+        conveyorMotorController4.setVoltage(volts);
     }
 
-    public void ConveryorLowOn(double speed) {
-        conveyorMotorController3.setVoltage(12.2);
-        conveyorMotorController4.setVoltage(12.2);
+    public void ConveryorLowOn(double volts) {
+        conveyorMotorController1.setVoltage(volts); //LEFT LOWER
+        conveyorMotorController3.setVoltage(volts);
+
     }
 
     public void ConveryorHighOff(double speed) {
