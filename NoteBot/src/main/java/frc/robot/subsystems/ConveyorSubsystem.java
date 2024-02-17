@@ -44,7 +44,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private Spark liftRightMotorController;
     private Ultrasonic ultrasonic1;
     private Ultrasonic ultrasonic2;
-    private DigitalInput limitSwitch1;
+    private DigitalInput loaadedLs1;
     private DigitalInput limitSwitch2;
     private DigitalInput limitSwitch3;
     private PowerDistribution powerDistribution;
@@ -116,13 +116,21 @@ public class ConveyorSubsystem extends SubsystemBase {
         UltrasonicConveyor = new AnalogInput(1);
         addChild("UltrasonicConveyor", UltrasonicConveyor);
 
-        //limitSwitch1 = new DigitalInput(8);
-        //addChild("LimitSwitch1", limitSwitch1);
+        loaadedLs1 = new DigitalInput(10);
+        addChild("loaadedLs1", loaadedLs1);
+
+        Shuffleboard.getTab("NoteBot")
+            .add("Loaded", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withSize(1, 1)
+            .withPosition(4, 5)
+            .getEntry();
+
 
         //limitSwitch2 = new DigitalInput(9);
         //addChild("LimitSwitch2", limitSwitch2);
 
-        //limitSwitch3 = new DigitalInput(10);
+        //limitSwitch3 = new DigitalInput(8);
         //addChild("LimitSwitch3", limitSwitch3);
 
         powerDistribution = new PowerDistribution();
@@ -174,7 +182,7 @@ public class ConveyorSubsystem extends SubsystemBase {
         //intakeBottomMotorController.set(0.30);
         //double noteDistance = UltrasonicConveyor.getAverageVoltage();
         
-        System.out.println("U1 " + ultrasonic1.getRangeMM());
+        //System.out.println("U1 " + ultrasonic1.getRangeMM());
     }
 
     @Override
