@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
-//import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay;
 //import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 //import edu.wpi.first.wpilibj.Ultrasonic;
@@ -33,7 +33,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private Compressor compressor;
     private Solenoid solenoid1;
     //private Relay solenoidRelay1;
-    private DoubleSolenoid solenoidDouble1;
+    //private DoubleSolenoid solenoidDouble1;
     private Spark intakeTopMotorController;
     private Spark intakeBottomMotorController;
     private WPI_VictorSPX shooterMotorController1;
@@ -72,7 +72,7 @@ public class ConveyorSubsystem extends SubsystemBase {
         compressor = new Compressor(2, PneumaticsModuleType.CTREPCM);
         //addChild("Compressor",compressor);
 
-        //solenoid1 = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
+        solenoid1 = new Solenoid(2, PneumaticsModuleType.CTREPCM, 0);
         //addChild("Solenoid1", solenoid1);
 
         //solenoidRelay1 = new Relay(0);
@@ -315,6 +315,14 @@ public class ConveyorSubsystem extends SubsystemBase {
     public boolean IsConveyorLoaded() {
         boolean lsState = loadedLs1.get();
         return lsState;
+
+    }
+
+    public void ConveyorUp() {
+        solenoid1.set(true);
+    }
+    public void ConveyorDown() {
+        solenoid1.set(false);
 
     }
 

@@ -48,8 +48,8 @@ public class RobotContainer {
     SmartDashboard.putData("DriveToAmp", new DriveToAmp( m_driveSubsystem ));
     SmartDashboard.putData("Pickup", new Pickup( m_conveyorSubsystem ));
     SmartDashboard.putData("PickUpAuto", new PickUpAuto());
-    SmartDashboard.putData("ShootAmp", new ShootAmp());
-    SmartDashboard.putData("ShootSpeakerHigh", new ShootSpeakerHigh());
+    SmartDashboard.putData("ShootAmp", new ShootAmp(m_conveyorSubsystem, 1));
+    SmartDashboard.putData("ShootSpeakerHigh", new ShootSpeakerHigh(m_conveyorSubsystem, 5));
     SmartDashboard.putData("ShootSpeekerLong", new ShootSpeekerLong());
     //SmartDashboard.putData("DriveForwardMeters", new DriveForwardMeters( m_driveSubsystem ));
     //SmartDashboard.putData("DriveRotateMeters", new DriveRotateMeters( m_driveSubsystem ));
@@ -90,11 +90,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    //final JoystickButton btnDrive1 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    //btnDrive1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    final JoystickButton btnDrive1 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
+    btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                         
-    //final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    //btnDrive2.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCircle.value);        
+    btnDrive2.onTrue(new ShootAmp(m_conveyorSubsystem, 2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     //final JoystickButton btnDrive3 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
     //btnDrive3.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
