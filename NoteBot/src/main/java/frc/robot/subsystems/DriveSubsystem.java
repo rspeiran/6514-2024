@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -43,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase {
             .withPosition(3, 3);
 
         driveRightMotorControler.setInverted(false);
-        driveRightMotorControler.setNeutralMode(NeutralMode.Brake);
+        driveRightMotorControler.setNeutralMode(NeutralMode.Coast);
 
         driveLeftMotorController = new WPI_TalonSRX(20);
         //addChild("DriveLeftMotorController",driveLeftMotorController);
@@ -54,7 +56,7 @@ public class DriveSubsystem extends SubsystemBase {
             .withPosition(0, 3);
         
         driveLeftMotorController.setInverted(false);
-        driveLeftMotorController.setNeutralMode(NeutralMode.Brake);
+        driveLeftMotorController.setNeutralMode(NeutralMode.Coast);
 
         differentialDrive = new DifferentialDrive(driveRightMotorControler, driveLeftMotorController);
         addChild("DifferentialDrive",differentialDrive);
@@ -66,13 +68,13 @@ public class DriveSubsystem extends SubsystemBase {
         //addChild("DriveRightMotorControllerFollower",driveRightMotorControllerFollower);
         driveRightMotorControllerFollower.follow(driveRightMotorControler);
         driveRightMotorControllerFollower.setInverted(false);
-        driveRightMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
+        driveRightMotorControllerFollower.setNeutralMode(NeutralMode.Coast);
 
         driveLeftMotorControllerFollower = new WPI_VictorSPX(21);
         //addChild("DriveLeftMotorControllerFollower",driveLeftMotorControllerFollower);
         driveLeftMotorControllerFollower.follow(driveLeftMotorController);
         driveLeftMotorControllerFollower.setInverted(false);
-        driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
+        driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Coast);
 
         
         //driveLeftQuadratureEncoder = new Encoder(0, 1, false, EncodingType.k4X);
@@ -82,6 +84,12 @@ public class DriveSubsystem extends SubsystemBase {
         //driveRightQuadratureEncoder = new Encoder(2, 3, false, EncodingType.k4X);
         addChild("DriveRightQuadratureEncoder",driveRightQuadratureEncoder);
         //driveRightQuadratureEncoder.setDistancePerPulse(Math.PI*whd/cpr);
+
+        // Put both encoders in a list layout
+        //ShuffleboardLayout encoders =
+        //driveBaseTab.getLayout("Encoders", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 2);
+        //encoders.add("Left Encoder", m_leftEncoder);
+        //encoders.add("Right Encoder", m_rightEncoder);
 
 
 
