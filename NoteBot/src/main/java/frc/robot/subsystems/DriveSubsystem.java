@@ -90,8 +90,10 @@ public class DriveSubsystem extends SubsystemBase {
         //driveBaseTab.getLayout("Encoders", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 2);
         //encoders.add("Left Encoder", m_leftEncoder);
         //encoders.add("Right Encoder", m_rightEncoder);
-
-
+        Shuffleboard.getTab("NoteBot")
+            .getLayout("Encoders", BuiltInLayouts.kList)
+            .withPosition(0, 0)
+            .withSize(2, 2);
 
         analogGyro = new AnalogGyro(0);
         addChild("AnalogGyro",analogGyro);

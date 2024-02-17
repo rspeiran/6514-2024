@@ -12,16 +12,17 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Servo;
+//import edu.wpi.first.wpilibj.Relay;
+//import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Ultrasonic;
+//import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.MedianFilter;
-import edu.wpi.first.wpilibj.AnalogInput;
+//import edu.wpi.first.wpilibj.AnalogInput;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -31,7 +32,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class ConveyorSubsystem extends SubsystemBase {
     private Compressor compressor;
     private Solenoid solenoid1;
-    private Relay solenoidRelay1;
+    //private Relay solenoidRelay1;
     private DoubleSolenoid solenoidDouble1;
     private Spark intakeTopMotorController;
     private Spark intakeBottomMotorController;
@@ -43,15 +44,15 @@ public class ConveyorSubsystem extends SubsystemBase {
     private CANSparkMax conveyorMotorController4;
     private Spark liftLeftMotorController;
     private Spark liftRightMotorController;
-    private Ultrasonic ultrasonic1;
-    private Ultrasonic ultrasonic2;
+    //private Ultrasonic ultrasonic1;
+    //private Ultrasonic ultrasonic2;
     private DigitalInput loadedLs1;
     private DigitalInput limitSwitch2;
     private DigitalInput limitSwitch3;
     private PowerDistribution powerDistribution;
-    private Servo servo1;
-    private Servo servo2;
-    private AnalogInput ultrasonicConveyor;
+    //private Servo servo1;
+    //private Servo servo2;
+    //private AnalogInput ultrasonicConveyor;
 
     private final MedianFilter m_filter = new MedianFilter(5);
     
@@ -120,20 +121,20 @@ public class ConveyorSubsystem extends SubsystemBase {
         //addChild("LiftRightMotorController",liftRightMotorController);
         //liftRightMotorController.setInverted(false);
 
-        ultrasonic1 = new Ultrasonic(4,5 );
-        addChild("Ultrasonic1", ultrasonic1);
+        //ultrasonic1 = new Ultrasonic(4,5 );
+        //addChild("Ultrasonic1", ultrasonic1);
         MedianFilter m_filter = new MedianFilter(5);
         //ultrasonic2 = new Ultrasonic(6, 7);
         //addChild("Ultrasonic2", ultrasonic2);
 
-        ultrasonicConveyor = new AnalogInput(1);
-        addChild("UltrasonicConveyor", ultrasonicConveyor);
+        //ultrasonicConveyor = new AnalogInput(1);
+        //addChild("UltrasonicConveyor", ultrasonicConveyor);
 
-        loadedLs1 = new DigitalInput(9);
+        loadedLs1 = new DigitalInput(0);
         addChild("loaadedLs1", loadedLs1);
 
-        Shuffleboard.getTab("NoteBot")
-            .add("Loaded", false)
+        ShuffleboardTab NotebotTab = Shuffleboard.getTab("NoteBot");
+        NotebotTab.add("Loaded", false)
             .withWidget(BuiltInWidgets.kBooleanBox)
             .withSize(1, 1)
             .withPosition(4, 5)
@@ -156,15 +157,13 @@ public class ConveyorSubsystem extends SubsystemBase {
         //addChild("Servo2", servo2);
 
 
-        Shuffleboard.getTab("NoteBot")
-            .add("ShooterMotor Left", 0)
+        NotebotTab.add("ShooterMotor Left", 0)
             .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
             .withSize(2, 1) // make the widget 2x1
             .withPosition(0, 0) // place it in the top-left corner
             .getEntry();
 
-        Shuffleboard.getTab("NoteBot")
-            .add("ShooterMotor Right", 0)
+        NotebotTab.add("ShooterMotor Right", 0)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withSize(2, 1)
             .withPosition(3, 0)
@@ -214,11 +213,27 @@ public class ConveyorSubsystem extends SubsystemBase {
             IntakeOff();
             ConveryorLowoff();
             ConveryorHighOff();
+            if (!IsConveyorLoaded()){
+                m_state = 0;
+            }
         }
 
         else if (m_state == 2) {  //Shooting
             IntakeOff();
             compressor.disable();
+            if(1==2) {
+                if (IsConveyorLoaded()){
+                    IntakeOff();
+                    ConveryorLowoff();
+                    ConveryorHighOff();
+                }
+                else {
+                    IntakeOn(5.0);
+                    ConveryorLowOn(5.0);
+                    ConveryorHighOn(-3.0);
+                }
+            }            
+
             
         }
         else {
@@ -235,7 +250,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     public double GetConveyorLoad() {
-        return ultrasonicConveyor.getAverageVoltage();
+        //return ultrasonicConveyor.getAverageVoltage();
+        return 0;
     }
 
     public void SetDistanceToMaintain(double distanceMM) {
@@ -243,7 +259,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     public double GetUltrasonic1Distance() {
-        double measurement = ultrasonic1.getRangeMM();
+        double measurement = 100; //ultrasonic1.getRangeMM();
         double filteredMeasurement = m_filter.calculate(measurement);
         return filteredMeasurement;
     }
@@ -297,7 +313,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     public boolean IsConveyorLoaded() {
-        return loadedLs1.get();
+        boolean lsState = loadedLs1.get();
+        return lsState;
 
     }
 
