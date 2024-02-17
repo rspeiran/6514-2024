@@ -45,7 +45,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private Spark liftRightMotorController;
     private Ultrasonic ultrasonic1;
     private Ultrasonic ultrasonic2;
-    private DigitalInput loaadedLs1;
+    private DigitalInput loadedLs1;
     private DigitalInput limitSwitch2;
     private DigitalInput limitSwitch3;
     private PowerDistribution powerDistribution;
@@ -129,8 +129,8 @@ public class ConveyorSubsystem extends SubsystemBase {
         ultrasonicConveyor = new AnalogInput(1);
         addChild("UltrasonicConveyor", ultrasonicConveyor);
 
-        loaadedLs1 = new DigitalInput(10);
-        addChild("loaadedLs1", loaadedLs1);
+        loadedLs1 = new DigitalInput(9);
+        addChild("loaadedLs1", loadedLs1);
 
         Shuffleboard.getTab("NoteBot")
             .add("Loaded", false)
@@ -199,7 +199,7 @@ public class ConveyorSubsystem extends SubsystemBase {
                 IntakeOff();
                 ConveryorLowoff();
                 ConveryorHighOff();
-                compressor.enableDigital();
+                compressor.enableDigital(); 
                 m_state = 1;
             } else {
                 IntakeOn(5.0);
@@ -297,7 +297,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     public boolean IsConveyorLoaded() {
-        return loaadedLs1.get();
+        return loadedLs1.get();
 
     }
 
