@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
@@ -49,7 +50,9 @@ public class ConveyorSubsystem extends SubsystemBase {
     private PowerDistribution powerDistribution;
     private Servo servo1;
     private Servo servo2;
-    //private AnalogInput UltrasonicConveyor;
+    private AnalogInput UltrasonicConveyor;
+    //private MedianFilter;
+
 
     public ConveyorSubsystem() {
         compressor = new Compressor(2, PneumaticsModuleType.CTREPCM);
@@ -104,14 +107,14 @@ public class ConveyorSubsystem extends SubsystemBase {
         //addChild("LiftRightMotorController",liftRightMotorController);
         //liftRightMotorController.setInverted(false);
 
-        //ultrasonic1 = new Ultrasonic(4, 5);
-        //addChild("Ultrasonic1", ultrasonic1);
-
+        ultrasonic1 = new Ultrasonic(4,5 );
+        addChild("Ultrasonic1", ultrasonic1);
+        MedianFilter m_filter = new MedianFilter(5);
         //ultrasonic2 = new Ultrasonic(6, 7);
         //addChild("Ultrasonic2", ultrasonic2);
 
-        //AnalogInput UltrasonicConveyor = new AnalogInput(0);
-        //addChild("UltrasonicConveyor", UltrasonicConveyor);
+        UltrasonicConveyor = new AnalogInput(1);
+        addChild("UltrasonicConveyor", UltrasonicConveyor);
 
         //limitSwitch1 = new DigitalInput(8);
         //addChild("LimitSwitch1", limitSwitch1);
@@ -170,8 +173,8 @@ public class ConveyorSubsystem extends SubsystemBase {
         //intakeTopMotorController.set(0.20);
         //intakeBottomMotorController.set(0.30);
         //double noteDistance = UltrasonicConveyor.getAverageVoltage();
-        //System.out.print("Voltage " + noteDistance);
-        ;
+        
+        System.out.println("U1 " + ultrasonic1.getRangeMM());
     }
 
     @Override
@@ -179,6 +182,18 @@ public class ConveyorSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run when in simulation
 
     }
+
+    public double GetConveyorLoad() {
+        return UltrasonicConveyor.getAverageVoltage();
+    }
+
+    public double GetUltrasonicLoad() {
+        double measurement = ultrasonic1.getRangeMM();
+        //double filteredMeasurement = m_filter.calculate(measurement);
+        //double pidOutput = m_pidController.calculate(filteredMeasurement);
+        return measurement;
+    }
+
 
     public void IntakeOn() {
         intakeTopMotorController.set(0.90);
