@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.AnalogInput;
 
@@ -50,9 +51,21 @@ public class ConveyorSubsystem extends SubsystemBase {
     private PowerDistribution powerDistribution;
     private Servo servo1;
     private Servo servo2;
-    private AnalogInput UltrasonicConveyor;
-    //private MedianFilter;
+    private AnalogInput ultrasonicConveyor;
 
+    private final MedianFilter m_filter = new MedianFilter(5);
+    
+    private final double kHoldDistanceMillimeters = 1.0e3;
+    // proportional speed constant
+    private static final double kP = 0.001;
+    // integral speed constant
+    private static final double kI = 0.0;
+    // derivative speed constant
+    private static final double kD = 0.0;
+
+    private final PIDController m_pidController = new PIDController(kP, kI, kD);
+
+    public int m_state = 1;     //0 ==Intake, 1 == loaded 2 == shooting
 
     public ConveyorSubsystem() {
         compressor = new Compressor(2, PneumaticsModuleType.CTREPCM);
@@ -113,8 +126,8 @@ public class ConveyorSubsystem extends SubsystemBase {
         //ultrasonic2 = new Ultrasonic(6, 7);
         //addChild("Ultrasonic2", ultrasonic2);
 
-        UltrasonicConveyor = new AnalogInput(1);
-        addChild("UltrasonicConveyor", UltrasonicConveyor);
+        ultrasonicConveyor = new AnalogInput(1);
+        addChild("UltrasonicConveyor", ultrasonicConveyor);
 
         loaadedLs1 = new DigitalInput(10);
         addChild("loaadedLs1", loaadedLs1);
@@ -162,12 +175,9 @@ public class ConveyorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        //IntakeOn();
 
         //SmartDashboard.putNumber("ShooterMotor Left", shooterMotorController1.getMotorOutputVoltage());
         //SmartDashboard.putNumber("ShooterMotor Right", shooterMotorController2.getMotorOutputVoltage());
-        //compressor.enableDigital();
-        compressor.disable();
 
         //shooterMotorController1.set(0.10);
         //shooterMotorController2.set(0.10);
@@ -183,6 +193,39 @@ public class ConveyorSubsystem extends SubsystemBase {
         //double noteDistance = UltrasonicConveyor.getAverageVoltage();
         
         //System.out.println("U1 " + ultrasonic1.getRangeMM());
+
+        if (m_state == 0) { //Intake
+            if (IsConveyorLoaded()){
+                IntakeOff();
+                ConveryorLowoff();
+                ConveryorHighOff();
+                compressor.enableDigital();
+                m_state = 1;
+            } else {
+                IntakeOn(5.0);
+                ConveryorLowOn(5.0);
+                ConveryorHighOn(-3.0);
+                ShooterOff();
+                compressor.disable();
+            }
+
+        } 
+        else if (m_state == 1) { //Loaded
+            IntakeOff();
+            ConveryorLowoff();
+            ConveryorHighOff();
+        }
+
+        else if (m_state == 2) {  //Shooting
+            IntakeOff();
+            compressor.disable();
+            
+        }
+        else {
+            //Something bad happened to hit here.
+        }
+
+
     }
 
     @Override
@@ -192,26 +235,35 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     public double GetConveyorLoad() {
-        return UltrasonicConveyor.getAverageVoltage();
+        return ultrasonicConveyor.getAverageVoltage();
     }
 
-    public double GetUltrasonicLoad() {
+    public void SetDistanceToMaintain(double distanceMM) {
+        m_pidController.setSetpoint(distanceMM);
+    }
+
+    public double GetUltrasonic1Distance() {
         double measurement = ultrasonic1.getRangeMM();
-        //double filteredMeasurement = m_filter.calculate(measurement);
-        //double pidOutput = m_pidController.calculate(filteredMeasurement);
-        return measurement;
+        double filteredMeasurement = m_filter.calculate(measurement);
+        return filteredMeasurement;
+    }
+
+    public double MaintainDistance() {
+        double filteredMeasurement = GetUltrasonic1Distance();
+        double pidOutput = m_pidController.calculate(filteredMeasurement);
+        //m_robotDrive.arcadeDrive(pidOutput, 0, false);
+        return pidOutput;
     }
 
 
-    public void IntakeOn() {
-        intakeTopMotorController.set(0.90);
-        intakeBottomMotorController.set(0.90);
+    public void IntakeOn(double voltage) {
+        intakeTopMotorController.setVoltage(voltage);
+        intakeBottomMotorController.setVoltage(voltage);
     }
 
     public void IntakeOff() {
         intakeTopMotorController.set(0);
         intakeBottomMotorController.set(0);
-       
     }
 
     public void ShooterOn(double speed) {
@@ -229,21 +281,24 @@ public class ConveyorSubsystem extends SubsystemBase {
         conveyorMotorController4.setVoltage(volts);
     }
 
+    public void ConveryorHighOff() {
+        conveyorMotorController1.setVoltage(0);
+        conveyorMotorController2.setVoltage(0);
+    }
+
     public void ConveryorLowOn(double volts) {
         conveyorMotorController1.setVoltage(volts); //LEFT LOWER
         conveyorMotorController3.setVoltage(volts);
-
     }
 
-    public void ConveryorHighOff(double speed) {
-        conveyorMotorController1.setVoltage(12.2);
-        conveyorMotorController2.setVoltage(12.2);
+    public void ConveryorLowoff() {
+        conveyorMotorController3.setVoltage(0);
+        conveyorMotorController4.setVoltage(0);
     }
 
-    public void ConveryorLowoff(double speed) {
-        conveyorMotorController3.setVoltage(12.2);
-        conveyorMotorController4.setVoltage(12.2);
-    }
+    public boolean IsConveyorLoaded() {
+        return loaadedLs1.get();
 
+    }
 
 }
