@@ -1,7 +1,7 @@
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.DoubleSupplier;
-
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveTeleop extends Command {
@@ -11,7 +11,6 @@ public class DriveTeleop extends Command {
     private final DoubleSupplier m_right;
 
     public DriveTeleop(DriveSubsystem subsystem, DoubleSupplier left, DoubleSupplier right) {
-
 
         m_driveSubsystem = subsystem;
         m_left = left;
