@@ -113,14 +113,6 @@ public class ConveyorSubsystem extends SubsystemBase {
         //addChild("ShooterMotorController2",shooterMotorController2);
         shooterMotorController2.setInverted(false);
 
-        //liftLeftMotorController = new Spark(11);
-        //addChild("LiftLeftMotorController",liftLeftMotorController);
-        //liftLeftMotorController.setInverted(false);
-
-        //liftRightMotorController = new Spark(12);
-        //addChild("LiftRightMotorController",liftRightMotorController);
-        //liftRightMotorController.setInverted(false);
-
         //ultrasonic1 = new Ultrasonic(4,5 );
         //addChild("Ultrasonic1", ultrasonic1);
         MedianFilter m_filter = new MedianFilter(5);
