@@ -22,6 +22,7 @@ public class RobotContainer {
 
   public final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  public final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   // Joysticks
   //private final PS4Controller operatorPS4Controller = new PS4Controller(1);
@@ -44,7 +45,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auto3", new Auto3());
     SmartDashboard.putData("Auto4", new Auto4());
     SmartDashboard.putData("Auto5", new Auto5());
-    SmartDashboard.putData("Climb", new Climb( m_conveyorSubsystem ));
+    //SmartDashboard.putData("Climb", new Climb( m_conveyorSubsystem, 1,1 ));
     SmartDashboard.putData("DriveToAmp", new DriveToAmp( m_driveSubsystem ));
     SmartDashboard.putData("Pickup", new Pickup( m_conveyorSubsystem ));
     SmartDashboard.putData("PickUpAuto", new PickUpAuto());
@@ -63,6 +64,13 @@ public class RobotContainer {
       () -> driverPS4Controller.getLeftY(), 
       () -> driverPS4Controller.getRightY())
     );
+
+    m_climbSubsystem.setDefaultCommand(
+      new Climb(m_climbSubsystem,
+      () -> driverPS4Controller.getRawAxis(2), 
+      () -> driverPS4Controller.getRawAxis(3))
+    );
+
 
     // Configure autonomous sendable chooser
     m_chooser.addOption("Auto1", new Auto1());
@@ -113,7 +121,7 @@ public class RobotContainer {
                             
     //final JoystickButton btnOperator4 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
     //btnOperator4.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-                        
+    
 
   }
 
