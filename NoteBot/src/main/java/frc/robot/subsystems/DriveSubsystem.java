@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -108,12 +108,12 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
         //double distLeft = driveLeftQuadratureEncoder.getDistance();
-        double distLeft = driveLeftMotorController.getSelectedSensorPosition();
-        SmartDashboard.putNumber("Left Encoder", distLeft);
+        //double distLeft = driveLeftMotorController.getSelectedSensorPosition();
+        //SmartDashboard.putNumber("Left Encoder", distLeft);
         
         //double distRight = driveLeftQuadratureEncoder.getDistance();
-        double distRight = driveRightMotorControler.getSelectedSensorPosition();
-        SmartDashboard.putNumber("Left Encoder", distRight);
+        //double distRight = driveRightMotorControler.getSelectedSensorPosition();
+        //SmartDashboard.putNumber("Left Encoder", distRight);
         
     }
 

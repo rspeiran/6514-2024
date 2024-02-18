@@ -2,8 +2,8 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,7 +30,7 @@ public class RobotContainer {
 
   
   // A chooser for autonomous commands
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
   private RobotContainer() {
@@ -39,19 +39,19 @@ public class RobotContainer {
 
     Shuffleboard.selectTab("NoteBot Commands");
 
-    SmartDashboard.putData("AutoCommand", new AutoCommand());
-    SmartDashboard.putData("Auto1", new Auto1());
-    SmartDashboard.putData("Auto2", new Auto2());
-    SmartDashboard.putData("Auto3", new Auto3());
-    SmartDashboard.putData("Auto4", new Auto4());
-    SmartDashboard.putData("Auto5", new Auto5());
+    //SmartDashboard.putData("AutoCommand", new AutoCommand());
+    //SmartDashboard.putData("Auto1", new Auto1());
+    //SmartDashboard.putData("Auto2", new Auto2());
+    //SmartDashboard.putData("Auto3", new Auto3());
+    //SmartDashboard.putData("Auto4", new Auto4());
+    //SmartDashboard.putData("Auto5", new Auto5());
     //SmartDashboard.putData("Climb", new Climb( m_conveyorSubsystem, 1,1 ));
-    SmartDashboard.putData("DriveToAmp", new DriveToAmp( m_driveSubsystem ));
-    SmartDashboard.putData("Pickup", new Pickup( m_conveyorSubsystem ));
-    SmartDashboard.putData("PickUpAuto", new PickUpAuto());
-    SmartDashboard.putData("ShootAmp", new ShootAmp(m_conveyorSubsystem, 1));
-    SmartDashboard.putData("ShootSpeakerHigh", new ShootSpeakerHigh(m_conveyorSubsystem, 5));
-    SmartDashboard.putData("ShootSpeekerLong", new ShootSpeekerLong());
+    //SmartDashboard.putData("DriveToAmp", new DriveToAmp( m_driveSubsystem ));
+    //SmartDashboard.putData("Pickup", new Pickup( m_conveyorSubsystem ));
+    //SmartDashboard.putData("PickUpAuto", new PickUpAuto());
+    //SmartDashboard.putData("ShootAmp", new ShootAmp(m_conveyorSubsystem, 1));
+    //SmartDashboard.putData("ShootSpeakerHigh", new ShootSpeakerHigh(m_conveyorSubsystem, 5));
+    //SmartDashboard.putData("ShootSpeekerLong", new ShootSpeekerLong());
     //SmartDashboard.putData("DriveForwardMeters", new DriveForwardMeters( m_driveSubsystem ));
     //SmartDashboard.putData("DriveRotateMeters", new DriveRotateMeters( m_driveSubsystem ));
 
@@ -73,16 +73,16 @@ public class RobotContainer {
 
 
     // Configure autonomous sendable chooser
-    m_chooser.addOption("Auto1", new Auto1());
-    m_chooser.addOption("Auto2", new Auto2());
-    m_chooser.addOption("Auto3", new Auto3());
-    m_chooser.addOption("Auto4", new Auto4());
-    m_chooser.addOption("Auto5", new Auto5());
-    m_chooser.addOption("AutoCommand", new AutoCommand());
-    m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
+    //m_chooser.addOption("Auto1", new Auto1());
+    //m_chooser.addOption("Auto2", new Auto2());
+    //m_chooser.addOption("Auto3", new Auto3());
+    //m_chooser.addOption("Auto4", new Auto4());
+    //m_chooser.addOption("Auto5", new Auto5());
+    //m_chooser.addOption("AutoCommand", new AutoCommand());
+    //m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
 
 
-    SmartDashboard.putData("Auto Mode", m_chooser);
+    //SmartDashboard.putData("Auto Mode", m_chooser);
     
   }
 
@@ -141,7 +141,8 @@ public class RobotContainer {
   */
   public Command getAutonomousCommand() {
     // The selected command will be run in autonomous
-    return m_chooser.getSelected();
+    //return m_chooser.getSelected();
+    return new Auto1(); 
   }
   
 }

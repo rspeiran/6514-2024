@@ -1,10 +1,10 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+//import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -12,16 +12,21 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.Relay;
+//import edu.wpi.first.wpilibj.Relay;
 //import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 //import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.networktables.BooleanEntry;
+import edu.wpi.first.networktables.GenericEntry;
+
 //import edu.wpi.first.wpilibj.AnalogInput;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
@@ -42,13 +47,13 @@ public class ConveyorSubsystem extends SubsystemBase {
     private CANSparkMax conveyorMotorController2;
     private CANSparkMax conveyorMotorController3;
     private CANSparkMax conveyorMotorController4;
-    private Spark liftLeftMotorController;
-    private Spark liftRightMotorController;
+    //private Spark liftLeftMotorController;
+    //private Spark liftRightMotorController;
     //private Ultrasonic ultrasonic1;
     //private Ultrasonic ultrasonic2;
     private DigitalInput loadedLs1;
-    private DigitalInput limitSwitch2;
-    private DigitalInput limitSwitch3;
+    //private DigitalInput limitSwitch2;
+    //private DigitalInput limitSwitch3;
     private PowerDistribution powerDistribution;
     //private Servo servo1;
     //private Servo servo2;
@@ -56,7 +61,7 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     private final MedianFilter m_filter = new MedianFilter(5);
     
-    private final double kHoldDistanceMillimeters = 1.0e3;
+    // private final double kHoldDistanceMillimeters = 1.0e3;
     // proportional speed constant
     private static final double kP = 0.001;
     // integral speed constant
@@ -67,6 +72,27 @@ public class ConveyorSubsystem extends SubsystemBase {
     private final PIDController m_pidController = new PIDController(kP, kI, kD);
 
     public int m_state = 1;     //0 ==Intake, 1 == loaded 2 == shooting
+
+    private double counter = 0;
+
+    //Shuffleboard Configuration
+    private ShuffleboardTab NoteBotTab = Shuffleboard.getTab("NoteBot");
+   
+    private GenericEntry CountEntry =
+       NoteBotTab.add("Conveyor Count", 0)
+        .withPosition(9, 4)
+          .getEntry();
+
+
+    private GenericEntry LoadedEntry  = 
+        NoteBotTab.add("Loaded", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withSize(1, 1)
+        .withPosition(9, 0)
+        .getEntry();
+
+    //Shuffleboard Configuration END
+
 
     public ConveyorSubsystem() {
         compressor = new Compressor(2, PneumaticsModuleType.CTREPCM);
@@ -123,15 +149,7 @@ public class ConveyorSubsystem extends SubsystemBase {
         //addChild("UltrasonicConveyor", ultrasonicConveyor);
 
         loadedLs1 = new DigitalInput(0);
-        addChild("loaadedLs1", loadedLs1);
-
-        ShuffleboardTab NotebotTab = Shuffleboard.getTab("NoteBot");
-        NotebotTab.add("Loaded", false)
-            .withWidget(BuiltInWidgets.kBooleanBox)
-            .withSize(1, 1)
-            .withPosition(4, 5)
-            .getEntry();
-
+        //addChild("loaadedLs1", loadedLs1);
 
         //limitSwitch2 = new DigitalInput(9);
         //addChild("LimitSwitch2", limitSwitch2);
@@ -148,18 +166,17 @@ public class ConveyorSubsystem extends SubsystemBase {
         //servo2 = new Servo(14);
         //addChild("Servo2", servo2);
 
+        //NotebotTab.add("ShooterMotor Left", 0)
+        //    .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
+        //    .withSize(2, 1) // make the widget 2x1
+        //    .withPosition(0, 0) // place it in the top-left corner
+        //    .getEntry();
 
-        NotebotTab.add("ShooterMotor Left", 0)
-            .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
-            .withSize(2, 1) // make the widget 2x1
-            .withPosition(0, 0) // place it in the top-left corner
-            .getEntry();
-
-        NotebotTab.add("ShooterMotor Right", 0)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .withSize(2, 1)
-            .withPosition(3, 0)
-            .getEntry();
+        //NotebotTab.add("ShooterMotor Right", 0)
+        //    .withWidget(BuiltInWidgets.kNumberSlider)
+        //    .withSize(2, 1)
+        //    .withPosition(3, 0)
+        //    .getEntry();
 
     }
 
@@ -184,6 +201,16 @@ public class ConveyorSubsystem extends SubsystemBase {
         //double noteDistance = UltrasonicConveyor.getAverageVoltage();
         
         //System.out.println("U1 " + ultrasonic1.getRangeMM());
+        //SmartDashboard.putBoolean("Loaded", IsConveyorLoaded());
+
+        //LoadedEntry = IsConveyorLoaded();
+                        
+        counter = counter +1;
+        //Update Shuffleboard Start
+        CountEntry.setDouble(counter);
+        LoadedEntry.setBoolean(IsConveyorLoaded());
+        //Update Shuffleboard End
+
 
         if (m_state == 0) { //Intake
             if (IsConveyorLoaded()){
