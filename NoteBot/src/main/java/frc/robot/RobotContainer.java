@@ -2,17 +2,22 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.*;
 
@@ -30,7 +35,7 @@ public class RobotContainer {
 
   
   // A chooser for autonomous commands
-  //SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
   private RobotContainer() {
@@ -55,6 +60,35 @@ public class RobotContainer {
     //SmartDashboard.putData("DriveForwardMeters", new DriveForwardMeters( m_driveSubsystem ));
     //SmartDashboard.putData("DriveRotateMeters", new DriveRotateMeters( m_driveSubsystem ));
 
+    ShuffleboardLayout autoCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Auto", BuiltInLayouts.kList)
+      .withSize(2, 6)
+      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+
+    autoCommands.add(new AutoCommand());
+    autoCommands.add(new Auto1());
+    autoCommands.add(new Auto2());
+    autoCommands.add(new Auto3());
+    autoCommands.add(new Auto4());
+    autoCommands.add(new Auto5());
+
+    ShuffleboardLayout climbCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Climb", BuiltInLayouts.kList)
+      .withSize(2, 6)
+      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+    
+      //climbCommands.add(new Climb(m_conveyorSubsystem, () -> driverPS4Controller.getRawAxis(2),() -> driverPS4Controller.getRawAxis(3)));
+
+    ShuffleboardLayout conveyorCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Conveyor", BuiltInLayouts.kList)
+      .withSize(2, 6)
+      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+  
+    conveyorCommands.add(new ShootAmp(m_conveyorSubsystem, 1));
+    conveyorCommands.add(new ShootSpeakerHigh(m_conveyorSubsystem, 5));
+    conveyorCommands.add(new ShootSpeekerLong());
+  
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -73,16 +107,16 @@ public class RobotContainer {
 
 
     // Configure autonomous sendable chooser
-    //m_chooser.addOption("Auto1", new Auto1());
-    //m_chooser.addOption("Auto2", new Auto2());
-    //m_chooser.addOption("Auto3", new Auto3());
-    //m_chooser.addOption("Auto4", new Auto4());
-    //m_chooser.addOption("Auto5", new Auto5());
-    //m_chooser.addOption("AutoCommand", new AutoCommand());
-    //m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
+    m_chooser.addOption("Auto1", new Auto1());
+    m_chooser.addOption("Auto2", new Auto2());
+    m_chooser.addOption("Auto3", new Auto3());
+    m_chooser.addOption("Auto4", new Auto4());
+    m_chooser.addOption("Auto5", new Auto5());
+    m_chooser.addOption("AutoCommand", new AutoCommand());
+    m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
 
 
-    //SmartDashboard.putData("Auto Mode", m_chooser);
+    SmartDashboard.putData("Auto Mode", m_chooser);
     
   }
 
@@ -141,8 +175,8 @@ public class RobotContainer {
   */
   public Command getAutonomousCommand() {
     // The selected command will be run in autonomous
-    //return m_chooser.getSelected();
-    return new Auto1(); 
+    return m_chooser.getSelected();
+    //return new Auto1(); 
   }
   
 }
