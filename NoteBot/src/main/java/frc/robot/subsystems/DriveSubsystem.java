@@ -1,18 +1,23 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+//import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -21,88 +26,74 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class DriveSubsystem extends SubsystemBase {
 
-    private WPI_TalonSRX driveRightMotorControler;
+    private WPI_TalonSRX driveRightMotorController;
     private WPI_TalonSRX driveLeftMotorController;
     private DifferentialDrive differentialDrive;
     private WPI_VictorSPX driveRightMotorControllerFollower;
     private WPI_VictorSPX driveLeftMotorControllerFollower;
-    private Encoder driveLeftQuadratureEncoder;
-    private Encoder driveRightQuadratureEncoder;
-    private AnalogGyro analogGyro;
+    //private Encoder driveLeftQuadratureEncoder;
+    //private Encoder driveRightQuadratureEncoder;
+    //private AnalogGyro analogGyro;
 
     //private static final double cpr = 1024;
     //private static final double whd = 6; // for 6 inch wheel
 
+    //Shuffleboard Configuration
+    private ShuffleboardTab NoteBotTab = Shuffleboard.getTab("NoteBot");
+   
+    private GenericEntry LeftEncoderEntry = NoteBotTab.add("Left Encoder", 0)
+        .withPosition(4, 1)
+        .getEntry();
+
+    private GenericEntry RightEncoderEntry = NoteBotTab.add("Right Encoder", 0)
+        .withPosition(5, 1)
+        .getEntry();
+    
+        //Shuffleboard Configuration End
+
     public DriveSubsystem() {
 
-        driveRightMotorControler = new WPI_TalonSRX(30);
-        //addChild("DriveRightMotorControler",driveRightMotorControler);
-        
-        Shuffleboard.getTab("NoteBot")
-            .add("DriveRight", 0)
-            .withWidget(BuiltInWidgets.kNumberBar) 
-            .withSize(2, 1)
-            .withPosition(3, 3);
-
-        driveRightMotorControler.setInverted(false);
-        driveRightMotorControler.setNeutralMode(NeutralMode.Coast);
+        driveRightMotorController = new WPI_TalonSRX(30);
+        driveRightMotorController.setInverted(false);
+        driveRightMotorController.setNeutralMode(NeutralMode.Coast);
+        driveRightMotorController.setSelectedSensorPosition(0);
 
         driveLeftMotorController = new WPI_TalonSRX(20);
-        //addChild("DriveLeftMotorController",driveLeftMotorController);
-        Shuffleboard.getTab("NoteBot")
-            .add("DriveLeft", 0)
-            .withWidget(BuiltInWidgets.kNumberBar) 
-            .withSize(2, 1)
-            .withPosition(0, 3);
-        
         driveLeftMotorController.setInverted(false);
         driveLeftMotorController.setNeutralMode(NeutralMode.Coast);
+        driveLeftMotorController.setSelectedSensorPosition(0);
 
-        differentialDrive = new DifferentialDrive(driveRightMotorControler, driveLeftMotorController);
-        addChild("DifferentialDrive",differentialDrive);
+        differentialDrive = new DifferentialDrive(driveRightMotorController, driveLeftMotorController);
         differentialDrive.setSafetyEnabled(false);
         differentialDrive.setExpiration(0.1);
         differentialDrive.setMaxOutput(1.0);
 
         driveRightMotorControllerFollower = new WPI_VictorSPX(31);
-        //addChild("DriveRightMotorControllerFollower",driveRightMotorControllerFollower);
-        driveRightMotorControllerFollower.follow(driveRightMotorControler);
+        driveRightMotorControllerFollower.follow(driveRightMotorController);
         driveRightMotorControllerFollower.setInverted(false);
         driveRightMotorControllerFollower.setNeutralMode(NeutralMode.Coast);
 
         driveLeftMotorControllerFollower = new WPI_VictorSPX(21);
-        //addChild("DriveLeftMotorControllerFollower",driveLeftMotorControllerFollower);
         driveLeftMotorControllerFollower.follow(driveLeftMotorController);
         driveLeftMotorControllerFollower.setInverted(false);
         driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Coast);
 
         
-        //driveLeftQuadratureEncoder = new Encoder(0, 1, false, EncodingType.k4X);
-        addChild("DriveLeftQuadratureEncoder",driveLeftQuadratureEncoder);
-        //driveLeftQuadratureEncoder.setDistancePerPulse(Math.PI*whd/cpr);
-
-        //driveRightQuadratureEncoder = new Encoder(2, 3, false, EncodingType.k4X);
-        addChild("DriveRightQuadratureEncoder",driveRightQuadratureEncoder);
-        //driveRightQuadratureEncoder.setDistancePerPulse(Math.PI*whd/cpr);
-
-        // Put both encoders in a list layout
-        //ShuffleboardLayout encoders =
-        //driveBaseTab.getLayout("Encoders", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 2);
-        //encoders.add("Left Encoder", m_leftEncoder);
-        //encoders.add("Right Encoder", m_rightEncoder);
-        Shuffleboard.getTab("NoteBot")
-            .getLayout("Encoders", BuiltInLayouts.kList)
-            .withPosition(0, 0)
-            .withSize(2, 2);
-
-        analogGyro = new AnalogGyro(0);
-        addChild("AnalogGyro",analogGyro);
-        analogGyro.setSensitivity(0.007);
+        //analogGyro = new AnalogGyro(0);
+        //analogGyro.setSensitivity(0.007);
 
     }
 
     @Override
     public void periodic() {
+        //UPDATE SHUFFLEBOARD START
+
+        LeftEncoderEntry.setDouble(GetLeftEncoder());
+        RightEncoderEntry.setDouble(GetRightEncoder());
+        
+        //UPDATE SHUFFLEBOARD END
+
+
     }
 
     @Override
@@ -112,19 +103,26 @@ public class DriveSubsystem extends SubsystemBase {
         //SmartDashboard.putNumber("Left Encoder", distLeft);
         
         //double distRight = driveLeftQuadratureEncoder.getDistance();
-        //double distRight = driveRightMotorControler.getSelectedSensorPosition();
+        //double distRight = driveRightMotorController.getSelectedSensorPosition();
         //SmartDashboard.putNumber("Left Encoder", distRight);
         
     }
 
     public void drive(double left, double right) {
         differentialDrive.tankDrive(left, right);
-        //Shuffleboard.getTab("NoteBot")
-        //    .add("DriveLeft", left);
-        //Shuffleboard.getTab("NoteBot")
-        //    .add("DriveRight", right);
+    }
 
+    public double GetLeftEncoder() {
+        return driveRightMotorController.getSensorCollection().getQuadraturePosition() * -1;
+    }
+    public double GetRightEncoder() {
+        return driveLeftMotorController.getSensorCollection().getQuadraturePosition();
 
+    }
+
+    public void SetEncoderReset() {
+        driveRightMotorController.setSelectedSensorPosition(0);
+        driveLeftMotorController.setSelectedSensorPosition(0);
     }
 }
 

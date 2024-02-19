@@ -151,6 +151,9 @@ public class ConveyorSubsystem extends SubsystemBase {
         loadedLs1 = new DigitalInput(0);
         //addChild("loaadedLs1", loadedLs1);
 
+        
+
+
         //limitSwitch2 = new DigitalInput(9);
         //addChild("LimitSwitch2", limitSwitch2);
 
@@ -165,6 +168,7 @@ public class ConveyorSubsystem extends SubsystemBase {
 
         //servo2 = new Servo(14);
         //addChild("Servo2", servo2);
+
 
         //NotebotTab.add("ShooterMotor Left", 0)
         //    .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
@@ -206,10 +210,13 @@ public class ConveyorSubsystem extends SubsystemBase {
         //LoadedEntry = IsConveyorLoaded();
                         
         counter = counter +1;
-        //Update Shuffleboard Start
+        
+        //UPDATE SHUFFLEBOARD START
+
         CountEntry.setDouble(counter);
         LoadedEntry.setBoolean(IsConveyorLoaded());
-        //Update Shuffleboard End
+        
+        //UPDATE SHUFFLEBOARD END
 
 
         if (m_state == 0) { //Intake
