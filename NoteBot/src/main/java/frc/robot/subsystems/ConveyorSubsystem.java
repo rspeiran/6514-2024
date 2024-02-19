@@ -30,8 +30,10 @@ import edu.wpi.first.networktables.GenericEntry;
 //import edu.wpi.first.wpilibj.AnalogInput;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ConveyorSubsystem extends SubsystemBase {
@@ -308,9 +310,9 @@ public class ConveyorSubsystem extends SubsystemBase {
         intakeBottomMotorController.set(0);
     }
 
-    public void ShooterOn(double speed) {
-        shooterMotorController1.setVoltage(12.2);
-        shooterMotorController2.setVoltage(12.2);
+    public void ShooterOn(double voltage) {
+        shooterMotorController1.setVoltage(voltage);
+        shooterMotorController2.setVoltage(voltage);
     }
 
     public void ShooterOff() {
@@ -337,6 +339,24 @@ public class ConveyorSubsystem extends SubsystemBase {
         conveyorMotorController3.setVoltage(0);
         conveyorMotorController4.setVoltage(0);
     }
+
+    public void ConveyorMotorBrake() {
+        conveyorMotorController1.setIdleMode(IdleMode.kBrake);
+        conveyorMotorController2.setIdleMode(IdleMode.kBrake);
+        conveyorMotorController3.setIdleMode(IdleMode.kBrake);
+        conveyorMotorController4.setIdleMode(IdleMode.kBrake);
+        shooterMotorController1.setNeutralMode(NeutralMode.Brake);
+        shooterMotorController2.setNeutralMode(NeutralMode.Brake);
+    }
+        public void ConveyorMotorCoast() {
+        conveyorMotorController1.setIdleMode(IdleMode.kCoast);
+        conveyorMotorController2.setIdleMode(IdleMode.kCoast);
+        conveyorMotorController3.setIdleMode(IdleMode.kCoast);
+        conveyorMotorController4.setIdleMode(IdleMode.kCoast);
+        shooterMotorController1.setNeutralMode(NeutralMode.Coast);
+        shooterMotorController2.setNeutralMode(NeutralMode.Coast);
+    }
+
 
     public boolean IsConveyorLoaded() {
         boolean lsState = loadedLs1.get();

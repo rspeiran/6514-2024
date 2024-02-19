@@ -25,6 +25,7 @@ public class ShootAmp extends Command {
         counter = 0;
         m_conveyorSubsystem.m_state = 2;
         m_conveyorSubsystem.ConveyorUp();
+        m_conveyorSubsystem.ConveyorMotorBrake();
         
 
     }
@@ -33,15 +34,38 @@ public class ShootAmp extends Command {
     @Override
     public void execute() {
         //lift the conveyor
+        m_conveyorSubsystem.ConveyorUp();
+
         counter = counter +1;
-        if (counter > 400)
+
+        //STEP 1 - Get the Conveyor UP
+        if (counter < 100)
         {
-            m_conveyorSubsystem.ConveyorUp();
-            m_conveyorSubsystem.ConveryorLowOn(2);
+            //Give cycles for conveyor to position
+        }
+        //STEP 2 - Move Note to Shooter
+        else if (m_conveyorSubsystem.IsConveyorLoaded() ) {
+            m_conveyorSubsystem.ConveryorLowOn(2.6);
             m_conveyorSubsystem.ConveryorHighOn(2.6);
             m_conveyorSubsystem.ShooterOn(0.0);
 
         }
+        //STEP 3 - Stop Conveyor and Push 
+        else if (!m_conveyorSubsystem.IsConveyorLoaded() ) {
+            m_conveyorSubsystem.ConveryorLowOn(0);
+            m_conveyorSubsystem.ConveryorHighOn(1.4);
+            m_conveyorSubsystem.ShooterOn(1.4);
+
+        }
+        //STEP 4 - Shoting Must have failed... Get it out!
+        
+        if (counter > 400){
+            m_conveyorSubsystem.ConveryorLowOn(2);
+            m_conveyorSubsystem.ConveryorHighOn(2.6);
+            m_conveyorSubsystem.ShooterOn(2.6);
+
+        }
+
 
     }
 
@@ -49,13 +73,16 @@ public class ShootAmp extends Command {
     @Override
     public void end(boolean interrupted) {
         m_conveyorSubsystem.ConveyorDown();
+        m_conveyorSubsystem.ConveryorLowOn(0);
+        m_conveyorSubsystem.ConveryorHighOn(0);
+        m_conveyorSubsystem.ShooterOn(0);
         m_conveyorSubsystem.m_state=0;
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if(m_conveyorSubsystem.IsConveyorLoaded() && counter < 600)
+        if(m_conveyorSubsystem.IsConveyorLoaded() || counter < 500)
         {
             return false;
         }
