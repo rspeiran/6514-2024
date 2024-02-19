@@ -48,7 +48,16 @@ public class DriveSubsystem extends SubsystemBase {
     private GenericEntry RightEncoderEntry = NoteBotTab.add("Right Encoder", 0)
         .withPosition(5, 1)
         .getEntry();
-    
+
+    private GenericEntry LeftEncoderDistanceEntry = NoteBotTab.add("Left Distance", 0)
+        .withPosition(4, 2)
+        .getEntry();
+
+    private GenericEntry RightEncoderDistanceEntry = NoteBotTab.add("Right Distance", 0)
+        .withPosition(5, 2)
+        .getEntry();
+
+
         //Shuffleboard Configuration End
 
     public DriveSubsystem() {
@@ -91,6 +100,8 @@ public class DriveSubsystem extends SubsystemBase {
         LeftEncoderEntry.setDouble(GetLeftEncoder());
         RightEncoderEntry.setDouble(GetRightEncoder());
         
+        LeftEncoderDistanceEntry.setDouble(GetLeftEncoderDistance());
+        RightEncoderDistanceEntry.setDouble(GetRightEncoderDistance());
         //UPDATE SHUFFLEBOARD END
 
 
@@ -112,6 +123,10 @@ public class DriveSubsystem extends SubsystemBase {
         differentialDrive.tankDrive(left, right);
     }
 
+    public void driveArcade(double power, double rotation) {
+        differentialDrive.arcadeDrive(-power, rotation);
+      }
+
     public double GetLeftEncoder() {
         return driveRightMotorController.getSensorCollection().getQuadraturePosition() * -1;
     }
@@ -119,6 +134,18 @@ public class DriveSubsystem extends SubsystemBase {
         return driveLeftMotorController.getSensorCollection().getQuadraturePosition();
 
     }
+    public double GetLeftEncoderDistance() {
+        double distance = GetLeftEncoder() / (4096 / 18.849556); //6Xpi
+        return distance;
+    }
+    public double GetRightEncoderDistance() {
+        double distance = GetRightEncoder() / (4096 / 18.849556); //6Xpi
+        return distance;
+    }
+
+    public double getAverageDistance() {
+        return (GetLeftEncoderDistance() + GetRightEncoderDistance()) / 2.0;
+      }
 
     public void SetEncoderReset() {
         driveRightMotorController.setSelectedSensorPosition(0);

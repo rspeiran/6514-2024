@@ -8,13 +8,13 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveForwardMeters extends Command {
 
     private final DriveSubsystem m_driveSubsystem;
-    private double m_Meters;
-    private double m_Power;
+    private double m_inches;
+    private double m_power;
  
-    public DriveForwardMeters(double Meters, double Power, DriveSubsystem subsystem) {
+    public DriveForwardMeters(double inches, double power, DriveSubsystem subsystem) {
 
-        m_Meters = Meters;
-        m_Power = Power;
+        m_inches = inches;
+        m_power = power;
 
         m_driveSubsystem = subsystem;
         addRequirements(m_driveSubsystem);
@@ -24,22 +24,26 @@ public class DriveForwardMeters extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        m_driveSubsystem.SetEncoderReset();
+        m_driveSubsystem.driveArcade(m_power, 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        m_driveSubsystem.driveArcade(m_power, 0);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_driveSubsystem.driveArcade(0,0);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return  Math.abs(m_driveSubsystem.getAverageDistance()) >= Math.abs(m_inches);
     }
 
     @Override
