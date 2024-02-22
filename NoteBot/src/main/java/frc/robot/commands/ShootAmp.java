@@ -10,6 +10,7 @@ public class ShootAmp extends Command {
     private final ConveyorSubsystem m_conveyorSubsystem;
     private final Double m_power;
     private int counter = 0;
+    private int pushcount = 0;
 
     public ShootAmp(ConveyorSubsystem subsystem, double power) {
 
@@ -45,24 +46,30 @@ public class ShootAmp extends Command {
         }
         //STEP 2 - Move Note to Shooter
         else if (m_conveyorSubsystem.IsConveyorLoaded() ) {
-            m_conveyorSubsystem.ConveryorLowOn(2.6);
-            m_conveyorSubsystem.ConveryorHighOn(2.6);
+            m_conveyorSubsystem.ConveryorLowOn(1.75);
+            m_conveyorSubsystem.ConveryorHighOn(1.75);
             m_conveyorSubsystem.ShooterOn(0.0);
 
         }
         //STEP 3 - Stop Conveyor and Push 
-        else if (!m_conveyorSubsystem.IsConveyorLoaded() ) {
+        else if (!m_conveyorSubsystem.IsConveyorLoaded() && pushcount < 30) {
             m_conveyorSubsystem.ConveryorLowOn(0);
-            m_conveyorSubsystem.ConveryorHighOn(1.4);
-            m_conveyorSubsystem.ShooterOn(1.4);
-
+            m_conveyorSubsystem.ConveryorHighOn(1.60);
+            m_conveyorSubsystem.ShooterOn(1.60);
+            pushcount = pushcount + 1;
+        }
+        else if (pushcount >= 30 && pushcount < 50)
+        {
+            //m_conveyorSubsystem.ShooterOn(2.25);
+            //m_conveyorSubsystem.ConveryorHighOn(0.5);
+            //m_conveyorSubsystem.ConveyorDown();
         }
         //STEP 4 - Shoting Must have failed... Get it out!
         
-        if (counter > 400){
+        if (counter > 250){
             m_conveyorSubsystem.ConveryorLowOn(2);
             m_conveyorSubsystem.ConveryorHighOn(2.6);
-            m_conveyorSubsystem.ShooterOn(2.6);
+            m_conveyorSubsystem.ShooterOn(3.0);  
 
         }
 
@@ -76,13 +83,13 @@ public class ShootAmp extends Command {
         m_conveyorSubsystem.ConveryorLowOn(0);
         m_conveyorSubsystem.ConveryorHighOn(0);
         m_conveyorSubsystem.ShooterOn(0);
-        m_conveyorSubsystem.m_state=0;
+        m_conveyorSubsystem.m_state=0;   ///TEMP Should be 0
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if(m_conveyorSubsystem.IsConveyorLoaded() || counter < 500)
+        if(m_conveyorSubsystem.IsConveyorLoaded() || counter < 300)
         {
             return false;
         }
