@@ -25,6 +25,7 @@ public class DriveForwardMeters extends Command {
     @Override
     public void initialize() {
         m_driveSubsystem.SetEncoderReset();
+        m_driveSubsystem.SetMotorBrake();
         m_driveSubsystem.driveArcade(m_power, 0);
     }
 

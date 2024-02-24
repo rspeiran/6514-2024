@@ -27,6 +27,8 @@ import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.GenericEntry;
 
+import java.util.ArrayList;
+
 //import edu.wpi.first.wpilibj.AnalogInput;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
@@ -35,6 +37,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import io.github.pseudoresonance.pixy2api.*;
+import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
+import io.github.pseudoresonance.pixy2api.links.*;
 
 public class ConveyorSubsystem extends SubsystemBase {
     private Compressor compressor;
@@ -77,6 +83,15 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     private double counter = 0;
 
+    private final Pixy2 pixy = Pixy2.createInstance(new SPILink());
+
+    public int noteX;
+    public int noteY;
+    public int noteAngle;
+    public int noteWidth;
+    public int noteHeight;
+    public boolean detected;
+
     //Shuffleboard Configuration
     private ShuffleboardTab NoteBotTab = Shuffleboard.getTab("NoteBot");
    
@@ -91,6 +106,49 @@ public class ConveyorSubsystem extends SubsystemBase {
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withSize(1, 1)
         .withPosition(9, 0)
+        .getEntry();
+
+
+    private GenericEntry NoteXEntry  = 
+        NoteBotTab.add("Note X", 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withSize(1, 1)
+        .withPosition(0, 3)
+        .getEntry();
+
+    private GenericEntry NoteYEntry  = 
+        NoteBotTab.add("Note Y", 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withSize(1, 1)
+        .withPosition(1, 3)
+        .getEntry();
+
+    private GenericEntry NoteAngleEntry  = 
+        NoteBotTab.add("Note Angle", 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withSize(1, 1)
+        .withPosition(2, 3)
+        .getEntry();
+
+    private GenericEntry NoteWidthEntry  = 
+        NoteBotTab.add("Note Width", 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withSize(1, 1)
+        .withPosition(3, 3)
+        .getEntry();
+
+    private GenericEntry NoteHeightEntry  = 
+        NoteBotTab.add("Note Height", 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withSize(1, 1)
+        .withPosition(4, 3)
+        .getEntry();
+
+    private GenericEntry BlockCountEntry  = 
+        NoteBotTab.add("BlockCount", 0)
+        .withWidget(BuiltInWidgets.kTextView)
+        .withSize(1, 1)
+        .withPosition(5, 3)
         .getEntry();
 
     //Shuffleboard Configuration END
@@ -184,6 +242,14 @@ public class ConveyorSubsystem extends SubsystemBase {
         //    .withPosition(3, 0)
         //    .getEntry();
 
+        try {
+            pixy.init();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Pixy Init Error:" + e);
+        }
+
     }
 
     @Override
@@ -213,15 +279,11 @@ public class ConveyorSubsystem extends SubsystemBase {
                         
         counter = counter +1;
         
-        //UPDATE SHUFFLEBOARD START
-
-        CountEntry.setDouble(counter);
-        LoadedEntry.setBoolean(IsConveyorLoaded());
-        
-        //UPDATE SHUFFLEBOARD END
 
 
         if (m_state == 0) { //Intake
+            ShooterOff();
+            
             if (IsConveyorLoaded()){
                 IntakeOff();
                 ConveryorLowoff();
@@ -229,11 +291,21 @@ public class ConveyorSubsystem extends SubsystemBase {
                 compressor.enableDigital(); 
                 m_state = 1;
             } else {
-                IntakeOn(10.0);  //TESTING 4
-                ConveryorLowOn(12.0);  //TESTIN  4 
-                ConveryorHighOn(-3.0);
-                ShooterOff();
-                compressor.disable();
+                if(noteHeight > 0 || detected)
+                {
+                    IntakeOn(7.0);  //TESTING 4
+                    ConveryorLowOn(9.0);  //TESTIN  4 
+                    ConveryorHighOn(-3.0);
+                    ShooterOff();
+                    compressor.disable();
+                    detected = true;
+                } else {
+                    IntakeOff();
+                    ConveryorLowoff();
+                    ConveryorHighOff();
+                    compressor.enableDigital(); 
+                }
+
             }
 
         } 
@@ -244,6 +316,7 @@ public class ConveyorSubsystem extends SubsystemBase {
             if (!IsConveyorLoaded()){
                 m_state = 0;
             }
+            detected = false;
         }
 
         else if (m_state == 2) {  //Shooting
@@ -261,6 +334,58 @@ public class ConveyorSubsystem extends SubsystemBase {
         else {
             //Something bad happened to hit here.
         }
+
+        int blockCount = 0;
+        try {
+            blockCount = pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1, 25);
+            if(blockCount <= 0){
+                noteX = 0;
+                noteY = 0;
+                noteAngle = 0;
+                noteWidth = 0;
+                noteHeight = 0;
+            }else{
+                ArrayList<Block> noteList = pixy.getCCC().getBlockCache();
+
+                if( noteList.get(0).getHeight() > 35){
+                    noteX = noteList.get(0).getX();
+                    noteY = noteList.get(0).getY();
+                    noteAngle = noteList.get(0).getAngle();
+                    noteWidth = noteList.get(0).getWidth();
+                    noteHeight = noteList.get(0).getHeight();
+                }
+                else {
+                    noteX = 0;
+                    noteY = 0;
+                    noteAngle = 0;
+                    noteWidth = 0;
+                    noteHeight = 0;
+                }
+                NoteXEntry.setDouble(noteX);
+                NoteYEntry.setDouble(noteY);
+                NoteAngleEntry.setDouble(noteAngle);
+                NoteWidthEntry.setDouble(noteWidth);
+                NoteHeightEntry.setDouble(noteHeight);
+                BlockCountEntry.setInteger(blockCount);
+
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            //System.out.println(e.getLocalizedMessage());
+            //Is Camera attached?
+        }
+
+        //UPDATE SHUFFLEBOARD START
+
+        CountEntry.setDouble(counter);
+        LoadedEntry.setBoolean(IsConveyorLoaded());
+        
+        
+
+        //UPDATE SHUFFLEBOARD END
+
 
 
     }

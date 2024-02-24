@@ -151,5 +151,13 @@ public class DriveSubsystem extends SubsystemBase {
         driveRightMotorController.setSelectedSensorPosition(0);
         driveLeftMotorController.setSelectedSensorPosition(0);
     }
+
+    public void SetMotorBrake() {
+        driveRightMotorController.setNeutralMode(NeutralMode.Brake);
+        driveRightMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
+        driveLeftMotorController.setNeutralMode(NeutralMode.Brake);
+        driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Brake);
+
+    }
 }
 
