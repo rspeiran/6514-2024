@@ -40,8 +40,8 @@ public class DriveSubsystem extends SubsystemBase {
     //private static final double cpr = 1024;
     //private static final double whd = 6; // for 6 inch wheel
 
-    private AHRS ahrs;
-    private double compassheading;
+    public AHRS ahrs;
+    private double m_heading;
 
     //Shuffleboard Configuration
     private ShuffleboardTab NoteBotTab = Shuffleboard.getTab("NoteBot");
@@ -62,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
         .withPosition(5, 2)
         .getEntry();
 
-    private GenericEntry CompassHeadingEntry = NoteBotTab.add("Compass", 0)
+    private GenericEntry HeadingEntry = NoteBotTab.add("Heading", 0)
         .withPosition(7, 1)
         .getEntry();
 
@@ -96,8 +96,13 @@ public class DriveSubsystem extends SubsystemBase {
         driveLeftMotorControllerFollower.setInverted(false);
         driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Coast);
 
-        ahrs = new AHRS(SerialPort.Port.kMXP); /* Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB */
-        ahrs.zeroYaw(); //
+        try {
+            ahrs = new AHRS(SerialPort.Port.kMXP); /* Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB */
+            ahrs.zeroYaw(); //
+        }
+        catch (Exception e) {
+            System.out.println("NavX Init Failure" + e );
+        }
         //analogGyro = new AnalogGyro(0);
         //analogGyro.setSensitivity(0.007);
 
@@ -105,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        compassheading = ahrs.getAngle(); //ahrs.getCompassHeading();
+        m_heading = ahrs.getYaw(); //ahrs.getCompassHeading();
 
         
         
@@ -117,7 +122,7 @@ public class DriveSubsystem extends SubsystemBase {
         LeftEncoderDistanceEntry.setDouble(GetLeftEncoderDistance());
         RightEncoderDistanceEntry.setDouble(GetRightEncoderDistance());
         
-        CompassHeadingEntry.setDouble(compassheading);
+        HeadingEntry.setDouble(m_heading);
         //UPDATE SHUFFLEBOARD END
 
         
