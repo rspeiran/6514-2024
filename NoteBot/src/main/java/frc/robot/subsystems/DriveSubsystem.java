@@ -147,7 +147,7 @@ public class DriveSubsystem extends SubsystemBase {
         return (GetLeftEncoderDistance() + GetRightEncoderDistance()) / 2.0;
       }
 
-    public void SetEncoderReset() {
+    public void DriveEncoderReset() {
         driveRightMotorController.setSelectedSensorPosition(0);
         driveLeftMotorController.setSelectedSensorPosition(0);
     }

@@ -24,9 +24,9 @@ public class DriveForwardMeters extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_driveSubsystem.SetEncoderReset();
+        m_driveSubsystem.DriveEncoderReset();
         m_driveSubsystem.SetMotorBrake();
-        m_driveSubsystem.driveArcade(m_power, 0);
+        //m_driveSubsystem.driveArcade(m_power, 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
