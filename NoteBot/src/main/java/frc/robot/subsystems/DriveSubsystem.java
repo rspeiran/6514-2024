@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import java.util.Map;
@@ -23,6 +24,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -37,6 +39,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     //private static final double cpr = 1024;
     //private static final double whd = 6; // for 6 inch wheel
+
+    private AHRS ahrs;
+    private double compassheading;
 
     //Shuffleboard Configuration
     private ShuffleboardTab NoteBotTab = Shuffleboard.getTab("NoteBot");
@@ -55,6 +60,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     private GenericEntry RightEncoderDistanceEntry = NoteBotTab.add("Right Distance", 0)
         .withPosition(5, 2)
+        .getEntry();
+
+    private GenericEntry CompassHeadingEntry = NoteBotTab.add("Compass", 0)
+        .withPosition(7, 1)
         .getEntry();
 
 
@@ -87,7 +96,8 @@ public class DriveSubsystem extends SubsystemBase {
         driveLeftMotorControllerFollower.setInverted(false);
         driveLeftMotorControllerFollower.setNeutralMode(NeutralMode.Coast);
 
-        
+        ahrs = new AHRS(SerialPort.Port.kMXP); /* Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB */
+        ahrs.zeroYaw(); //
         //analogGyro = new AnalogGyro(0);
         //analogGyro.setSensitivity(0.007);
 
@@ -95,6 +105,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        compassheading = ahrs.getAngle(); //ahrs.getCompassHeading();
+
+        
+        
         //UPDATE SHUFFLEBOARD START
 
         LeftEncoderEntry.setDouble(GetLeftEncoder());
@@ -102,8 +116,11 @@ public class DriveSubsystem extends SubsystemBase {
         
         LeftEncoderDistanceEntry.setDouble(GetLeftEncoderDistance());
         RightEncoderDistanceEntry.setDouble(GetRightEncoderDistance());
+        
+        CompassHeadingEntry.setDouble(compassheading);
         //UPDATE SHUFFLEBOARD END
 
+        
 
     }
 

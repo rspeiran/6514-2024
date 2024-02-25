@@ -5,13 +5,13 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveForwardMeters extends Command {
+public class DriveStraight extends Command {
 
     private final DriveSubsystem m_driveSubsystem;
     private double m_inches;
     private double m_power;
  
-    public DriveForwardMeters(double inches, double power, DriveSubsystem subsystem) {
+    public DriveStraight(double inches, double power, DriveSubsystem subsystem) {
 
         m_inches = inches;
         m_power = power;

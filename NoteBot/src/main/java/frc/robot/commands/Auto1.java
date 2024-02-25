@@ -32,10 +32,10 @@ public class Auto1 extends SequentialCommandGroup {
         new ShootSpeakerHigh(m_conveyorSubsystem, 7.0),
         new WaitCommand(2),
         //  STEP 2:     Forward 6 * 12 = 72 (Pickup)
-        new DriveForwardMeters(72, 0.60, m_driveSubsystem),   //MOVED 95 INCHES
+        new DriveStraight(72, 0.60, m_driveSubsystem),   //MOVED 95 INCHES
         new WaitCommand((0.25)),
         //  STEP 3:     Backwars 6 * 12 = 72
-        new DriveForwardMeters(72, -0.60, m_driveSubsystem),
+        new DriveStraight(72, -0.60, m_driveSubsystem),
         new WaitCommand(0.25),
         //  STEP 4:  Shoot
         new ShootSpeakerHigh(m_conveyorSubsystem, 7.0)

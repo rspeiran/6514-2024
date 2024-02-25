@@ -140,7 +140,7 @@ public class RobotContainer {
     btnDrive2.onTrue(new ShootAmp(m_conveyorSubsystem, 2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     final JoystickButton btnDrive3 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCross.value);        
-    btnDrive3.onTrue(new DriveForwardMeters(24, 0.30, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    btnDrive3.onTrue(new DriveStraight(24, 0.30, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     //final JoystickButton btnDrive4 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
     //btnDrive4.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
