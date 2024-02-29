@@ -145,10 +145,10 @@ public class ConveyorSubsystem extends SubsystemBase {
         .getEntry();
 
     private GenericEntry BlockCountEntry  = 
-        NoteBotTab.add("BlockCount", 0)
+        NoteBotTab.add("Block Count", 0)
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
-        .withPosition(5, 3)
+        .withPosition(7, 0)
         .getEntry();
 
     //Shuffleboard Configuration END
