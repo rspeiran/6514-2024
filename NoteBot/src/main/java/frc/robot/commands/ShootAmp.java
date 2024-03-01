@@ -46,19 +46,19 @@ public class ShootAmp extends Command {
         }
         //STEP 2 - Move Note to Shooter
         else if (m_conveyorSubsystem.IsConveyorLoaded() ) {
-            m_conveyorSubsystem.ConveryorLowOn(1.75);
-            m_conveyorSubsystem.ConveryorHighOn(1.75);
+            m_conveyorSubsystem.ConveryorLowOn(3.00);
+            m_conveyorSubsystem.ConveryorHighOn(3.00);
             m_conveyorSubsystem.ShooterOn(0.0);
 
         }
         //STEP 3 - Stop Conveyor and Push 
-        else if (!m_conveyorSubsystem.IsConveyorLoaded() && pushcount < 30) {
+        else if (!m_conveyorSubsystem.IsConveyorLoaded() && pushcount < 60) {
             m_conveyorSubsystem.ConveryorLowOn(0);
-            m_conveyorSubsystem.ConveryorHighOn(1.60);
-            m_conveyorSubsystem.ShooterOn(1.60);
+            m_conveyorSubsystem.ConveryorHighOn(1.25);
+            m_conveyorSubsystem.ShooterOn(1.50);
             pushcount = pushcount + 1;
         }
-        else if (pushcount >= 30 && pushcount < 50)
+        else if (pushcount >= 60 && pushcount < 100)
         {
             //m_conveyorSubsystem.ShooterOn(2.25);
             //m_conveyorSubsystem.ConveryorHighOn(0.5);
@@ -66,7 +66,7 @@ public class ShootAmp extends Command {
         }
         //STEP 4 - Shoting Must have failed... Get it out!
         
-        if (counter > 250){
+        if (counter > 200){
             m_conveyorSubsystem.ConveryorLowOn(2);
             m_conveyorSubsystem.ConveryorHighOn(2.6);
             m_conveyorSubsystem.ShooterOn(3.0);  
