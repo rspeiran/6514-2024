@@ -134,8 +134,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     final JoystickButton btnDrive1 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
-    btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-                        
+    //btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0));
+    
     final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCircle.value);        
     btnDrive2.onTrue(new ShootAmp(m_conveyorSubsystem, 2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             

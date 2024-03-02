@@ -27,6 +27,7 @@ public class ShootSpeakerHigh extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        m_conveyorSubsystem.ConveryorLowOn(m_power);
         m_conveyorSubsystem.ConveryorHighOn(m_power);
         m_conveyorSubsystem.ShooterOn(m_power + 1);
         m_shootCount = m_shootCount +1;
@@ -41,12 +42,14 @@ public class ShootSpeakerHigh extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if(m_conveyorSubsystem.IsConveyorLoaded()  && m_shootCount > 20)
+        //if(m_conveyorSubsystem.IsConveyorLoaded()  && m_shootCount > 50)
+        if(!m_conveyorSubsystem.IsConveyorLoaded()  && m_shootCount > 35)
+
         {
-        return false;
+        return true;
         }
         else {
-            return true;    
+            return false;    
         }
     }
 
