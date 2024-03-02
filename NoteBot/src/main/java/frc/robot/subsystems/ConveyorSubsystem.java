@@ -45,6 +45,7 @@ import io.github.pseudoresonance.pixy2api.links.*;
 public class ConveyorSubsystem extends SubsystemBase {
     private Compressor compressor;
     private Solenoid solenoid1;
+    private Solenoid solenoid2;
     //private Relay solenoidRelay1;
     //private DoubleSolenoid solenoidDouble1;
     private Spark intakeTopMotorController;
@@ -160,6 +161,8 @@ public class ConveyorSubsystem extends SubsystemBase {
 
         solenoid1 = new Solenoid(2, PneumaticsModuleType.CTREPCM, 0);
         //addChild("Solenoid1", solenoid1);
+
+        solenoid2 = new Solenoid(2, PneumaticsModuleType.CTREPCM, 1);
 
         //solenoidRelay1 = new Relay(0);
         //addChild("SolenoidRelay1", solenoidRelay1);
@@ -488,7 +491,17 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
     public void ConveyorDown() {
         solenoid1.set(false);
-
     }
+
+    public void AmpEject() {
+        solenoid2.set(true);
+    }
+    public void AmpRetract() {
+        solenoid2.set(false);
+    }
+    public boolean IsEjected() {
+        return solenoid2.get();
+    }
+
 
 }
