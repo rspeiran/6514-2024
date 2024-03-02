@@ -2,10 +2,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class Auto4 extends SequentialCommandGroup {
+    private final ConveyorSubsystem m_conveyorSubsystem;
+    private final DriveSubsystem m_driveSubsystem;
 
-    public Auto4(){
+    public Auto4(ConveyorSubsystem cs, DriveSubsystem ds){
+        m_conveyorSubsystem = cs;
+        m_driveSubsystem = ds;
 
     addCommands(
         // Add Commands here:

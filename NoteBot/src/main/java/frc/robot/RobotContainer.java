@@ -68,9 +68,9 @@ public class RobotContainer {
     autoCommands.add(new AutoCommand());
     autoCommands.add(new Auto1(m_conveyorSubsystem, m_driveSubsystem));
     autoCommands.add(new Auto2(m_conveyorSubsystem, m_driveSubsystem));
-    autoCommands.add(new Auto3());
-    autoCommands.add(new Auto4());
-    autoCommands.add(new Auto5());
+    autoCommands.add(new Auto3(m_conveyorSubsystem, m_driveSubsystem));
+    autoCommands.add(new Auto4(m_conveyorSubsystem, m_driveSubsystem));
+    autoCommands.add(new Auto5(m_conveyorSubsystem, m_driveSubsystem));
 
     ShuffleboardLayout climbCommands = Shuffleboard.getTab("Commands")
       .getLayout("Climb", BuiltInLayouts.kList)
@@ -110,9 +110,9 @@ public class RobotContainer {
     // Configure autonomous sendable chooser
     m_chooser.addOption("Auto1", new Auto1(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("Auto2", new Auto2(m_conveyorSubsystem, m_driveSubsystem));
-    m_chooser.addOption("Auto3", new Auto3());
-    m_chooser.addOption("Auto4", new Auto4());
-    m_chooser.addOption("Auto5", new Auto5());
+    m_chooser.addOption("Auto3", new Auto3(m_conveyorSubsystem, m_driveSubsystem));
+    m_chooser.addOption("Auto4", new Auto4(m_conveyorSubsystem, m_driveSubsystem));
+    m_chooser.addOption("Auto5", new Auto5(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("AutoCommand", new AutoCommand());
     m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
 
