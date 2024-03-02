@@ -66,8 +66,8 @@ public class RobotContainer {
       .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
 
     autoCommands.add(new AutoCommand());
-    //autoCommands.add(new Auto1(m_driveSubsystem, m_conveyorSubsystem));
-    autoCommands.add(new Auto2());
+    autoCommands.add(new Auto1(m_conveyorSubsystem, m_driveSubsystem));
+    autoCommands.add(new Auto2(m_conveyorSubsystem, m_driveSubsystem));
     autoCommands.add(new Auto3());
     autoCommands.add(new Auto4());
     autoCommands.add(new Auto5());
@@ -109,7 +109,7 @@ public class RobotContainer {
     
     // Configure autonomous sendable chooser
     m_chooser.addOption("Auto1", new Auto1(m_conveyorSubsystem, m_driveSubsystem));
-    m_chooser.addOption("Auto2", new Auto2());
+    m_chooser.addOption("Auto2", new Auto2(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("Auto3", new Auto3());
     m_chooser.addOption("Auto4", new Auto4());
     m_chooser.addOption("Auto5", new Auto5());

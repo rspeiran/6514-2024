@@ -28,18 +28,20 @@ public class Auto1 extends SequentialCommandGroup {
         //      )    
         //  );
         //  STEP 1:   Shoot
-        new WaitCommand(2),
-        new ShootSpeakerHigh(m_conveyorSubsystem, 7.0),
-        new WaitCommand(2),
+        new WaitCommand(1),
+        new ShootSpeakerHigh(m_conveyorSubsystem, 8.0),
+        new WaitCommand(0.5),
         //  STEP 2:     Forward 6 * 12 = 72 (Pickup)
-        new DriveStraight(72, 0.60, m_driveSubsystem),   //MOVED 95 INCHES
-        new WaitCommand((0.25)),
+        new DriveStraight(62, 0.65, m_driveSubsystem),
+        new WaitCommand((1.00)),
+        new DriveEncoderReset(m_driveSubsystem),
+        new WaitCommand((1.00)),
         //  STEP 3:     Backwars 6 * 12 = 72
-        new DriveStraight(72, -0.60, m_driveSubsystem),
-        new WaitCommand(0.25),
+        new DriveStraight(62, -0.65, m_driveSubsystem),
+        new WaitCommand((0.50)),
+        new DriveEncoderReset(m_driveSubsystem),
         //  STEP 4:  Shoot
         new ShootSpeakerHigh(m_conveyorSubsystem, 7.0)
-
         );
     }
 

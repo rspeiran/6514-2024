@@ -46,56 +46,51 @@ public class ShootAmp extends Command {
             //Give cycles for conveyor to position
         }
         //STEP 2 - Move Note to Shooter
-        else if (m_conveyorSubsystem.IsConveyorLoaded() ) {
+        if (m_conveyorSubsystem.IsConveyorLoaded() ) {
             m_conveyorSubsystem.ConveryorLowOn(3.00);
             m_conveyorSubsystem.ConveryorHighOn(2.75);
             m_conveyorSubsystem.ShooterOn(0.0);
 
         }
         //STEP 3 - Stop Conveyor and Push 
-        else if (!m_conveyorSubsystem.IsConveyorLoaded() && pushcount < 60) {
+        if (!m_conveyorSubsystem.IsConveyorLoaded() && counter < 100) {
             m_conveyorSubsystem.ConveryorLowOn(0);
             m_conveyorSubsystem.ConveryorHighOn(1.25);
             m_conveyorSubsystem.ShooterOn(0);
             pushcount = pushcount + 1;
         }
-        else if (pushcount >= 60 && pushcount < 100)
+        else if (counter < 200)
         {
-            m_conveyorSubsystem.ConveryorHighOn(1.75);             
-            m_conveyorSubsystem.ShooterOn(1.75);
+            m_conveyorSubsystem.ConveryorHighOn(2.75);             
+            m_conveyorSubsystem.ShooterOn(2.75);
             pushcount = pushcount + 1;
         }
         
-        if (counter > 270 && counter < 470)
+        else if (counter < 400)
         {
             m_conveyorSubsystem.AmpEject();
             pushcount = pushcount + 1;
 
         }
-        if (counter > 470 && counter < 500)
+        else if (counter < 500)
         {
             pushcount = pushcount + 1;
             m_conveyorSubsystem.AmpRetract();
         }
-        if (counter > 415 && counter < 600)
+        else if (counter < 600 )
         {
             m_conveyorSubsystem.ConveyorDown();
             pushcount = pushcount + 1;
 
         }
-
-
-
-
-
         //STEP 5 - Shoting Must have failed... Get it out!
         
-        if (counter > 1000){
-            m_conveyorSubsystem.ConveryorLowOn(2);
-            m_conveyorSubsystem.ConveryorHighOn(2.6);
-            m_conveyorSubsystem.ShooterOn(3.0);  
+        //if (counter > 1000){
+        //    m_conveyorSubsystem.ConveryorLowOn(2);
+        //    m_conveyorSubsystem.ConveryorHighOn(2.6);
+        //    m_conveyorSubsystem.ShooterOn(3.0);  
 
-        }
+        //}
 
 
     }
@@ -113,7 +108,7 @@ public class ShootAmp extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if(m_conveyorSubsystem.IsConveyorLoaded() || counter < 1000)
+        if(m_conveyorSubsystem.IsConveyorLoaded() || counter < 700)
         {
             return false;
         }

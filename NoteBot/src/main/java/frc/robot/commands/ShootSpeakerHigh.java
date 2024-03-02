@@ -36,17 +36,21 @@ public class ShootSpeakerHigh extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_conveyorSubsystem.ConveryorLowOn(0);
+        m_conveyorSubsystem.ConveryorHighOn(0);
+        m_conveyorSubsystem.ShooterOn(0);
+ 
+
         m_conveyorSubsystem.m_state=0;
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        //if(m_conveyorSubsystem.IsConveyorLoaded()  && m_shootCount > 50)
         if(!m_conveyorSubsystem.IsConveyorLoaded()  && m_shootCount > 35)
 
         {
-        return true;
+            return true;
         }
         else {
             return false;    
