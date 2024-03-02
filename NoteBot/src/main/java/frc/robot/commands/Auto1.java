@@ -37,7 +37,7 @@ public class Auto1 extends SequentialCommandGroup {
         new DriveEncoderReset(m_driveSubsystem),
         new WaitCommand((1.00)),
         //  STEP 3:     Backwars 6 * 12 = 72
-        new DriveStraight(62, -0.65, m_driveSubsystem),
+        new DriveStraight(65, -0.65, m_driveSubsystem),
         new WaitCommand((0.50)),
         new DriveEncoderReset(m_driveSubsystem),
         //  STEP 4:  Shoot
