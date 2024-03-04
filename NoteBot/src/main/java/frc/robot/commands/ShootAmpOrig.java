@@ -5,14 +5,14 @@ import frc.robot.subsystems.ConveyorSubsystem;
 
 import java.util.function.DoubleSupplier;
 
-public class ShootAmp extends Command {
+public class ShootAmpOrig extends Command {
 
     private final ConveyorSubsystem m_conveyorSubsystem;
     private final Double m_power;
     private int counter = 0;
     private int pushcount = 0;
 
-    public ShootAmp(ConveyorSubsystem subsystem, double power) {
+    public ShootAmpOrig(ConveyorSubsystem subsystem, double power) {
 
         m_conveyorSubsystem = subsystem;
         m_power = power;

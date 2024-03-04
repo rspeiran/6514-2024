@@ -84,7 +84,7 @@ public class RobotContainer {
       .withSize(2, 6)
       .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
   
-    conveyorCommands.add(new ShootAmp(m_conveyorSubsystem, 1));
+    conveyorCommands.add(new ShootAmpOrig(m_conveyorSubsystem, 1));
     conveyorCommands.add(new ShootSpeakerHigh(m_conveyorSubsystem, 5));
     conveyorCommands.add(new ShootSpeekerLong());
   
@@ -108,13 +108,13 @@ public class RobotContainer {
 
     
     // Configure autonomous sendable chooser
-    m_chooser.addOption("Auto1", new Auto1(m_conveyorSubsystem, m_driveSubsystem));
+    //m_chooser.addOption("Auto1", new Auto1(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("Auto2", new Auto2(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("Auto3", new Auto3(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("Auto4", new Auto4(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("Auto5", new Auto5(m_conveyorSubsystem, m_driveSubsystem));
     m_chooser.addOption("AutoCommand", new AutoCommand());
-    m_chooser.setDefaultOption("AutoCommand", new AutoCommand());
+    m_chooser.setDefaultOption("Auto1", new Auto1(m_conveyorSubsystem, m_driveSubsystem));
 
 
     SmartDashboard.putData("Auto Mode", m_chooser);
@@ -138,7 +138,7 @@ public class RobotContainer {
     btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0));
     
     final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCircle.value);        
-    btnDrive2.onTrue(new ShootAmp(m_conveyorSubsystem, 2).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    btnDrive2.onTrue(new AutoAmpShoot(m_conveyorSubsystem, 3.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     final JoystickButton btnDrive3 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCross.value);        
     btnDrive3.onTrue(new DriveStraight(24, 0.30, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));

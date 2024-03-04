@@ -296,7 +296,7 @@ public class ConveyorSubsystem extends SubsystemBase {
             } else {
                 if(noteHeight > 0 || detected)
                 {
-                    IntakeOn(7.0);  //TESTING 4
+                    IntakeOn(6.0);  //TESTING 4
                     ConveryorLowOn(9.0);  //TESTIN  4 
                     ConveryorHighOn(-3.0);
                     ShooterOff();

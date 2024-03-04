@@ -16,32 +16,26 @@ public class Auto1 extends SequentialCommandGroup {
         m_conveyorSubsystem = cs;
         m_driveSubsystem = ds;
 
-    addCommands(
-        // Add Commands here:
-        // Also add parallel commands using the
-        //
-        // addCommands(
-        //      new command1(argsN, subsystem),
-        //      Commands.parallel(
-        //          new command2(argsN, subsystem),
-        //          new command3(argsN, subsystem)
-        //      )    
-        //  );
-        //  STEP 1:   Shoot
-        new WaitCommand(1),
-        new ShootSpeakerHigh(m_conveyorSubsystem, 8.0),
-        new WaitCommand(0.5),
-        //  STEP 2:     Forward 6 * 12 = 72 (Pickup)
-        new DriveStraight(62, 0.65, m_driveSubsystem),
-        new WaitCommand((1.00)),
-        new DriveEncoderReset(m_driveSubsystem),
-        new WaitCommand((1.00)),
-        //  STEP 3:     Backwars 6 * 12 = 72
-        new DriveStraight(65, -0.65, m_driveSubsystem),
-        new WaitCommand((0.50)),
-        new DriveEncoderReset(m_driveSubsystem),
-        //  STEP 4:  Shoot
-        new ShootSpeakerHigh(m_conveyorSubsystem, 7.0)
+        addCommands(
+            new WaitCommand(1),
+            new ShootSpeakerHigh(m_conveyorSubsystem, 8.0),
+            new WaitCommand(0.5),
+            //  STEP 2:     Forward 6 * 12 = 72 (Pickup)
+            new DriveStraight(62, 0.65, m_driveSubsystem),
+            new WaitCommand((1.00)),
+            new DriveEncoderReset(m_driveSubsystem),
+            new WaitCommand((1.00)),
+            //  STEP 3:     Backwars 6 * 12 = 72
+            new DriveStraight(65, -0.65, m_driveSubsystem),
+            new WaitCommand((0.50)),
+            new DriveEncoderReset(m_driveSubsystem),
+            //  STEP 4:  Shoot
+            new ShootSpeakerHigh(m_conveyorSubsystem, 7.0),
+            new WaitCommand((1.00)),
+            new DriveStraight(10, 0.65, m_driveSubsystem),
+            new DriveRotate(m_driveSubsystem,-10),
+            new DriveStraight(20, 0.65, m_driveSubsystem)
+ 
         );
     }
 

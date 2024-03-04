@@ -12,7 +12,7 @@ public class DriveRotate extends Command {
     private double kP;
     private double minMove;
  
-    public DriveRotate(double rotateToAngleRate, DriveSubsystem subsystem) {
+    public DriveRotate(DriveSubsystem subsystem, double rotateToAngleRate) {
 
         m_rotateToAngleRate = rotateToAngleRate;
         m_driveSubsystem = subsystem;
