@@ -32,6 +32,7 @@ public class Auto1 extends SequentialCommandGroup {
             //  STEP 4:  Shoot
             new ShootSpeakerHigh(m_conveyorSubsystem, 7.0),
             new WaitCommand((1.00)),
+            //  STEP 5:  Reposition away
             new DriveStraight(10, 0.65, m_driveSubsystem),
             new DriveRotate(m_driveSubsystem,-10),
             new DriveStraight(20, 0.65, m_driveSubsystem)
