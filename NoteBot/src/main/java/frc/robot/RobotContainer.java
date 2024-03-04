@@ -149,7 +149,11 @@ public class RobotContainer {
     final JoystickButton btnDrive4 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kTriangle.value);        
     btnDrive4.debounce(0.1)
       .onTrue(new AmpEjectToggle(m_conveyorSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-                            
+
+    final JoystickButton btnDrive5 = new JoystickButton(driverPS4Controller, 6);        
+    btnDrive5.whileTrue(new ClimbRelease(m_climbSubsystem, -2.0,  -2.0));
+
+
     //final JoystickButton btnOperator1 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
     //btnOperator1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
