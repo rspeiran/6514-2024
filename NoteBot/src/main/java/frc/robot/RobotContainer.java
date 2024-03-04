@@ -135,16 +135,20 @@ public class RobotContainer {
 
     final JoystickButton btnDrive1 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kSquare.value);        
     //btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    btnDrive1.onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0));
+    btnDrive1.debounce(0.1)
+      .onTrue(new ShootSpeakerHigh(m_conveyorSubsystem, 7.0));
     
     final JoystickButton btnDrive2 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCircle.value);        
-    btnDrive2.onTrue(new AutoAmpShoot(m_conveyorSubsystem, 3.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    btnDrive2.debounce(0.1)
+      .onTrue(new AutoAmpShoot(m_conveyorSubsystem, 3.0).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     final JoystickButton btnDrive3 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kCross.value);        
-    btnDrive3.onTrue(new DriveStraight(24, 0.30, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    btnDrive3.debounce(0.1)
+      .onTrue(new DriveStraight(24, 0.30, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     final JoystickButton btnDrive4 = new JoystickButton(driverPS4Controller, PS4Controller.Button.kTriangle.value);        
-    btnDrive4.onTrue(new AmpEjectToggle(m_conveyorSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    btnDrive4.debounce(0.1)
+      .onTrue(new AmpEjectToggle(m_conveyorSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                             
     //final JoystickButton btnOperator1 = new JoystickButton(operatorPS4Controller, PS4Controller.Button.kSquare.value);        
     //btnOperator1.onTrue(new DoNothing().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
