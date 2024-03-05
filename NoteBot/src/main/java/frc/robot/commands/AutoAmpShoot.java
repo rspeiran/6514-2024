@@ -17,7 +17,7 @@ public class AutoAmpShoot extends SequentialCommandGroup {
             new ShootAmpShoot(m_conveyorSubsystem, m_power),
             new WaitCommand(0.50),
             new ShootAmpEject(m_conveyorSubsystem, m_power),
-            new WaitCommand(0.50),
+            new WaitCommand(2.25),
             new ShootAmpRetract(m_conveyorSubsystem, m_power),
             new WaitCommand(0.50)
         );

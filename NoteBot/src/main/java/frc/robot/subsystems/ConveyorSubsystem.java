@@ -281,7 +281,6 @@ public class ConveyorSubsystem extends SubsystemBase {
         //LoadedEntry = IsConveyorLoaded();
                         
         counter = counter +1;
-        
 
 
         if (m_state == 0) { //Intake
@@ -293,16 +292,17 @@ public class ConveyorSubsystem extends SubsystemBase {
                 ConveryorHighOff();
                 compressor.enableDigital(); 
                 m_state = 1;
-            } else {
-                if(noteHeight > 0 || detected)
-                {
-                    IntakeOn(6.0);  //TESTING 4
-                    ConveryorLowOn(9.0);  //TESTIN  4 
-                    ConveryorHighOn(-3.0);
+            } 
+            else {
+                if(noteHeight > 0 || detected){
+                    //IntakeOn(6.0);  //TESTING 4
+                    //ConveryorLowOn(9.0);  //TESTIN  4 
+                    //ConveryorHighOn(-3.0);
                     ShooterOff();
-                    compressor.disable();
+                    //compressor.disable();
                     detected = true;
-                } else {
+                } 
+                else {
                     IntakeOff();
                     ConveryorLowoff();
                     ConveryorHighOff();
@@ -323,8 +323,8 @@ public class ConveyorSubsystem extends SubsystemBase {
         }
 
         else if (m_state == 2) {  //Shooting
-            IntakeOff();
-            compressor.disable();
+            //IntakeOff();  Shoot Commands must address this!
+            //compressor.disable();
         }
         else if (m_state == 3) {  //Conveyor Off
             IntakeOff();
@@ -453,8 +453,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     public void ConveryorLowOn(double volts) {
-        conveyorMotorController1.setVoltage(volts); //LEFT LOWER
-        conveyorMotorController3.setVoltage(volts);
+        conveyorMotorController3.setVoltage(volts); //LEFT LOWER
+        conveyorMotorController4.setVoltage(volts);
     }
 
     public void ConveryorLowoff() {
