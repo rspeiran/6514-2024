@@ -81,6 +81,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private final PIDController m_pidController = new PIDController(kP, kI, kD);
 
     public int m_state = 1;     //0 ==Intake, 1 == loaded, 2 == shooting, 3 Conveyor Off
+    public boolean m_ShootReady = false;
 
     private double counter = 0;
 
@@ -295,12 +296,12 @@ public class ConveyorSubsystem extends SubsystemBase {
             } 
             else {
                 if(noteHeight > 0 || detected){
-                    //IntakeOn(6.0);  //TESTING 4
-                    //ConveryorLowOn(9.0);  //TESTIN  4 
-                    //ConveryorHighOn(-3.0);
+                    IntakeOn(6.0);  //TESTING 4
+                    ConveryorLowOn(9.0);  //TESTIN  4 
+                    ConveryorHighOn(-3.0);
                     ShooterOff();
                     //compressor.disable();
-                    detected = true;
+                    //detected = true;
                 } 
                 else {
                     IntakeOff();
@@ -324,7 +325,8 @@ public class ConveyorSubsystem extends SubsystemBase {
 
         else if (m_state == 2) {  //Shooting
             //IntakeOff();  Shoot Commands must address this!
-            //compressor.disable();
+            //compressor.disable(); Shoot Commands must address this!
+            m_ShootReady = true;
         }
         else if (m_state == 3) {  //Conveyor Off
             IntakeOff();
